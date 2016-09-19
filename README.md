@@ -1,10 +1,10 @@
-## Panels
+## TabsOverfow
 
 ### Background
 
-Google Chrome has become the most popular web browser, surpassing Mozilla Firefox. Chrome is not devoid of its flaws, however. Many people have a hard time working in Chrome, due to Chrome's limited customizability around a user's needs. Enter Panels...
+Google Chrome has become the most popular web browser, surpassing Mozilla Firefox. Chrome is not devoid of its flaws, however. Many people have a hard time working in Chrome, due to Chrome's limited customizability around a user's needs. Enter TabsOverflow...
 
-Panels is a Chrome extension that allows users to manage their tabs in an efficient and elegant manner. Users can have their tabs grouped in such a way that they won't run into the problem of having too many tabs open at the same time. Panels will also provide hotkeys that allow for efficient navigation inside of Chrome.  
+TabsOverflow is a Chrome extension that allows users to manage their tabs in an efficient and elegant manner. Users can have their tabs grouped in such a way that they won't run into the problem of having too many tabs open at the same time. TabsOverflow will also provide hotkeys that allow for efficient navigation inside of Chrome.  
 
 ### Wireframes
 
