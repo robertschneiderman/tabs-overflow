@@ -8,7 +8,7 @@ Panels is a Chrome extension that allows users to manage their tabs in an effici
 
 ### Wireframes
 
-![wireframes](https://github.com/robertschneiderman/images/panels_wireframe.png)
+![wireframes](https://github.com/robertschneiderman/panels/tree/master/images/panels_wireframe.png)
 
 ### Functionality & MVP
 
