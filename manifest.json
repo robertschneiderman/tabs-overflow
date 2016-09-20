@@ -1,16 +1,25 @@
 {
   "manifest_version": 2,
 
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "Tab Overflow",
+  "description": "This is an extension for managin navigation with a large number by 'overflowing' excess tabs into an index tab.",
   "version": "1.0",
-
+  "background": {
+    "pesistent": "false",
+    "scripts": ["background.js"]
+  },
   "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "popup.html"
+    "default_icon": "icon.png"
   },
   "permissions": [
-    "activeTab",
-    "https://ajax.googleapis.com/"
-  ]
+    "tabs",
+    "history"
+  ],
+  "content_scripts": [{
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["num_script.js"]
+    },{
+      "matches": ["http://*/*"],
+      "js": ["overflow_tab.js"]
+    }]
 }
