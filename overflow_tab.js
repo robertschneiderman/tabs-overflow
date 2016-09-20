@@ -29,4 +29,5 @@ chrome.runtime.onMessage.addListener(message => {
 
 document.addEventListener("DOMContentLoaded", () => {
   chrome.runtime.sendMessage({type: "UPDATE_TAB"})
+  chrome.runtime.sendMessage({type: "REQUEST_TABS"})
 })
