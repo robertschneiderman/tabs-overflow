@@ -5,29 +5,45 @@ let purgatoryHandled = false;
 
 chrome.tabs.onCreated.addListener(tab => {
   getAllTabs(updateOverflowTab)
+  moveOverflowRight();
 });
 
 const getAllTabs = (call) => {
   chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, call)
-}
+};
 
 chrome.tabs.onRemoved.addListener(tab => {
   getAllTabs((tabs) => {
-    updateOverflowTab(tabs)
+    updateOverflowTab(tabs);
     if (overflowExists && tabs.length < 9) {
       chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB"})
     }
-  })
-  updateTabTitles()
-})
+  });
+  updateTabTitles();
+});
+
+const moveOverflowRight = () => {
+  if (overflowId > 0) {
+    chrome.tabs.move(overflowId, {index: 9});
+  }
+};
+
+chrome.tabs.onMoved.addListener(() => {
+  moveOverflowRight();
+});
+
+chrome.tabs.onAttached.addListener(() => {
+  moveOverflowRight();
+});
+
 
 const updateTabTitles = () => {
   getAllTabs((tabs) => {
     tabs.forEach((tab) => {
       chrome.tabs.sendMessage(tab.id, {type: "AMEND_TITLE", index: tab.index})
-    })
-  })
-}
+    });
+  });
+};
 
 const updateOverflowTab = (tabs) => {
 
