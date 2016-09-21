@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener((message) => {
       let listItem = document.createElement('li');
       let fav = document.createElement('img');
       fav.setAttribute('src', purgatoryTab.favIconUrl);
-      listItem.classList.add('oveflowItem');
+      listItem.classList.add('oveflow-item');
       let spn = document.createElement('span');
       spn.innerHTML = purgatoryTab.title;
       listItem.appendChild(fav);
