@@ -14,11 +14,13 @@ const getAllTabs = (call) => {
 }
 
 chrome.tabs.onRemoved.addListener(tab => {
-  getAllTabs(updateOverflowTab)
+  getAllTabs((tabs) => {
+    updateOverflowTab(tabs)
+    if (overflowExists && tabs.length < 9) {
+      chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB"})
+    }
+  })
   updateTabTitles()
-  if (overflowExists) {
-
-  }
 })
 
 const updateTabTitles = () => {

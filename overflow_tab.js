@@ -7,7 +7,8 @@ chrome.runtime.onMessage.addListener(message => {
       message.tabs.forEach(tab => {
         let listItem = document.createElement('li');
         listItem.classList.add('oveflowItem');
-        listItem.innerHTML = tab.title
+        listItem.innerHTML = tab.title;
+        listItem.setAttribute('data-url', tab.url);
         listItem.addEventListener('click', () => {
           listItem.remove();
           chrome.runtime.sendMessage({type: "OPEN_TAB", url: tab.url})
@@ -29,6 +30,12 @@ chrome.runtime.onMessage.addListener(message => {
         titleI = titleI.split(" ").slice(1).join(" ")
         console.log(title);
         title.innerHTML = `${message.index + 1}` + " " + titleI
+        break;
+      case "FETCH_TAB":
+        let list = document.getElementById("overflow-list");
+        let url = list.lastChild.getAttribute('data-url');
+        chrome.runtime.sendMessage({type: "OPEN_TAB", url: url});
+        list.lastChild.remove();
         break;
     default:
       console.log('hooray!');
