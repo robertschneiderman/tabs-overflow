@@ -1,9 +1,15 @@
 @import url("defaults");
 
-.overflow-list {
-  
-}
+.overflow-list {list-style: none;}
 
 .overflow-item {
 
+}
+
+.item-img {
+
+}
+
+.item-title {
+  
 }

@@ -6,10 +6,12 @@ chrome.runtime.onMessage.addListener((message) => {
       let tabList = document.getElementById("overflow-list");
       let listItem = document.createElement('li');
       let fav = document.createElement('img');
+      fav.classList.add('item-img');      
       fav.setAttribute('src', purgatoryTab.favIconUrl);
       listItem.classList.add('oveflow-item');
       let spn = document.createElement('span');
       spn.innerHTML = purgatoryTab.title;
+      spn.classList.add('item-text');      
       listItem.appendChild(fav);
       listItem.appendChild(spn);
       listItem.setAttribute('data-url', purgatoryTab.url);
