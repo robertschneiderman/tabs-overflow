@@ -2,16 +2,24 @@ let flag = true;
 let overflowId = 0;
 
 chrome.tabs.onCreated.addListener(tab => {
-  chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, updateOverflowTab)
+  handleTabCreate(tab)
 });
 
+const handleTabCreate = (tab) => {
+  getAllTabs(updateOverflowTab)
+}
+
+const getAllTabs = (call) => {
+  chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, call)
+}
+
 chrome.tabs.onRemoved.addListener(tab => {
-  chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, updateOverflowTab);
+  getAllTabs(updateOverflowTab)
   updateTabTitles()
 })
 
 const updateTabTitles = () => {
-  chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, (tabs) => {
+  getAllTabs((tabs) => {
     tabs.forEach((tab) => {
       chrome.tabs.sendMessage(tab.id, {type: "AMEND_TITLE", index: tab.index})
     })
@@ -26,8 +34,12 @@ const updateOverflowTab = (tabs) => {
       overflowId = tab.id;
     })
     flag = false;
-  } else {
-    chrome.tabs.sendMessage(overflowId, {type: "SEND_TABS", tabs: tabs});
+  }
+
+  if (tabs.length > 9) {
+    doomedTab = tabs[3]
+    chrome.tabs.sendMessage(overflowId, {type: 'SEND_TABS', tabs: [doomedTab]});
+    chrome.tabs.remove(doomedTab.id);
   }
 };
 
@@ -42,6 +54,9 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       break;
     case "REQUEST_TABS":
       chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, updateOverflowTab)
+      break;
+    case "OPEN_TAB":
+      chrome.tabs.create({url: message.url, index: 7});
       break;
     default:
       console.log('hooray!');

@@ -4,19 +4,17 @@ chrome.runtime.onMessage.addListener(message => {
   switch (message.type) {
     case "SEND_TABS":
       let tabList = document.getElementById("overflow-list");
-      tabList.innerHTML = '';
       message.tabs.forEach(tab => {
-        if (tab.index > 9) {
-          let listItem = document.createElement('li');
-          listItem.classList.add('oveflowItem');
-          listItem.setAttribute('data-id', tab.id);
-          listItem.innerHTML = tab.title;
-          listItem.addEventListener('click', () => {
-            chrome.runtime.sendMessage({type: "ACTIVATE_TAB", tabId: tab.id});
-          });
+        let listItem = document.createElement('li');
+        listItem.classList.add('oveflowItem');
+        listItem.innerHTML = tab.title
+        listItem.addEventListener('click', () => {
+          listItem.remove();
+          chrome.runtime.sendMessage({type: "OPEN_TAB", url: tab.url})
+        })
+        //Favicon?
 
-          tabList.appendChild(listItem);
-        }
+        tabList.appendChild(listItem);
       });
       break;
       case "SET_TITLE":
