@@ -6,8 +6,13 @@ chrome.runtime.onMessage.addListener(message => {
       let tabList = document.getElementById("overflow-list");
       message.tabs.forEach(tab => {
         let listItem = document.createElement('li');
+        let fav = document.createElement('img');
+        fav.setAttribute('src', tab.favIconUrl);
         listItem.classList.add('oveflowItem');
-        listItem.innerHTML = tab.title;
+        let spn = document.createElement('span')
+        spn.innerHTML = tab.title;
+        listItem.appendChild(fav);
+        listItem.appendChild(spn);
         listItem.setAttribute('data-url', tab.url);
         listItem.addEventListener('click', () => {
           listItem.remove();
