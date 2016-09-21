@@ -2,6 +2,7 @@ let overflowExists = false;
 let overflowId = 0;
 let purgatoryTab;
 let purgatoryHandled = false;
+let insertionCounter = 0;
 
 chrome.tabs.onCreated.addListener(tab => {
   getAllTabs(updateOverflowTab)
@@ -58,7 +59,7 @@ const updateOverflowTab = (tabs) => {
 
   if (tabs.length > 9) {
     doomedTab = tabs[3]
-    chrome.tabs.sendMessage(overflowId, {type: 'SEND_TABS', tabs: [doomedTab]});
+    chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab});
     chrome.tabs.remove(doomedTab.id);
   }
 };

@@ -2,25 +2,23 @@ chrome.runtime.onMessage.addListener(message => {
   let title;
   let titleI;
   switch (message.type) {
-    case "SEND_TABS":
+    case "SEND_TAB":
       let tabList = document.getElementById("overflow-list");
-      message.tabs.forEach(tab => {
-        let listItem = document.createElement('li');
-        let fav = document.createElement('img');
-        fav.setAttribute('src', tab.favIconUrl);
-        listItem.classList.add('oveflow-item');
-        let spn = document.createElement('span')
-        spn.innerHTML = tab.title;
-        listItem.appendChild(fav);
-        listItem.appendChild(spn);
-        listItem.setAttribute('data-url', tab.url);
-        listItem.addEventListener('click', () => {
-          listItem.remove();
-          chrome.runtime.sendMessage({type: "OPEN_TAB", url: tab.url})
-        })
+      let listItem = document.createElement('li');
+      let fav = document.createElement('img');
+      fav.setAttribute('src', message.tab.favIconUrl);
+      listItem.classList.add('oveflow-item');
+      let spn = document.createElement('span')
+      spn.innerHTML = message.tab.title;
+      listItem.appendChild(fav);
+      listItem.appendChild(spn);
+      listItem.setAttribute('data-url', message.tab.url);
+      listItem.addEventListener('click', () => {
+        listItem.remove();
+        chrome.runtime.sendMessage({type: "OPEN_TAB", url: message.tab.url})
+      })
 
-        tabList.appendChild(listItem);
-      });
+      tabList.appendChild(listItem);
       break;
       case "SET_TITLE":
         title = document.querySelector("title")
