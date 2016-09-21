@@ -19,7 +19,7 @@
       "matches": ["http://*/*", "https://*/*"],
       "js": ["num_script.js"]
     },{
-      "matches": ["http://*/*"],
+      "matches": ["http://*/*", "https://*/*"],
       "js": ["overflow_tab.js"]
     }]
 }

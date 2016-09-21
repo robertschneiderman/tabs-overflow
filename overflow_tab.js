@@ -1,10 +1,12 @@
 chrome.runtime.onMessage.addListener(message => {
+  let title;
+  let titleI;
   switch (message.type) {
     case "SEND_TABS":
       let tabList = document.getElementById("overflow-list");
+      tabList.innerHTML = '';
       message.tabs.forEach(tab => {
-        let el = document.querySelector(`[data-id="${tab.id}"]`);
-        if (!el) {
+        if (tab.index > 9) {
           let listItem = document.createElement('li');
           listItem.classList.add('oveflowItem');
           listItem.setAttribute('data-id', tab.id);
@@ -17,17 +19,28 @@ chrome.runtime.onMessage.addListener(message => {
         }
       });
       break;
-      case "ADJUST_TITLE":
+      case "SET_TITLE":
         title = document.querySelector("title")
-        tit = title.innerHTML
-        title.innerHTML = `${message.index}` + " " + tit
+        titleI = title.innerHTML
+        console.log(title);
+        title.innerHTML = `${message.index + 1}` + " " + titleI
+        break;
+      case "AMEND_TITLE":
+        title = document.querySelector("title")
+        titleI = title.innerHTML
+        titleI = titleI.split(" ").slice(1).join(" ")
+        console.log(title);
+        title.innerHTML = `${message.index + 1}` + " " + titleI
         break;
     default:
       console.log('hooray!');
   }
 });
 
+console.log("hi");
+chrome.runtime.sendMessage({type: "UPDATE_TITLE"})
+chrome.runtime.sendMessage({type: "REQUEST_TABS"})
+
 document.addEventListener("DOMContentLoaded", () => {
-  chrome.runtime.sendMessage({type: "UPDATE_TAB"})
   chrome.runtime.sendMessage({type: "REQUEST_TABS"})
 })
