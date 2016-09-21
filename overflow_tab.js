@@ -36,13 +36,14 @@ chrome.runtime.onMessage.addListener(message => {
         let url = list.lastChild.getAttribute('data-url');
         chrome.runtime.sendMessage({type: "OPEN_TAB", url: url});
         list.lastChild.remove();
+        if (!list.lastChild) {
+          chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
+        }
         break;
     default:
       console.log('hooray!');
   }
 });
-
-console.log("hi");
 chrome.runtime.sendMessage({type: "UPDATE_TITLE"})
 chrome.runtime.sendMessage({type: "REQUEST_TABS"})
 

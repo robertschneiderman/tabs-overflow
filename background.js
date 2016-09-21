@@ -63,6 +63,10 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     case "OPEN_TAB":
       chrome.tabs.create({url: message.url, index: 7});
       break;
+    case "DESTROY_OVERFLOW":
+      chrome.tabs.remove(overflowId);
+      overflowExists = false;
+      break;
     default:
       console.log('hooray!');
   }
