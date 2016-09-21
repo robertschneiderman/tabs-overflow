@@ -1,4 +1,4 @@
-let flag = true;
+let overflowExists = false;
 let overflowId = 0;
 
 chrome.tabs.onCreated.addListener(tab => {
@@ -16,6 +16,9 @@ const getAllTabs = (call) => {
 chrome.tabs.onRemoved.addListener(tab => {
   getAllTabs(updateOverflowTab)
   updateTabTitles()
+  if (overflowExists) {
+
+  }
 })
 
 const updateTabTitles = () => {
@@ -28,12 +31,12 @@ const updateTabTitles = () => {
 
 const updateOverflowTab = (tabs) => {
 
-  if (tabs.length > 8 && flag) {
+  if (tabs.length > 8 && !overflowExists) {
     chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: true},
     (tab) => {
       overflowId = tab.id;
     })
-    flag = false;
+    overflowExists = true;
   }
 
   if (tabs.length > 9) {
