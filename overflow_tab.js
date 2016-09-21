@@ -18,7 +18,6 @@ chrome.runtime.onMessage.addListener(message => {
           listItem.remove();
           chrome.runtime.sendMessage({type: "OPEN_TAB", url: tab.url})
         })
-        //Favicon?
 
         tabList.appendChild(listItem);
       });

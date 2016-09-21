@@ -1,13 +1,11 @@
 let overflowExists = false;
 let overflowId = 0;
+let purgatoryTab;
+let purgatoryHandled = false;
 
 chrome.tabs.onCreated.addListener(tab => {
-  handleTabCreate(tab)
-});
-
-const handleTabCreate = (tab) => {
   getAllTabs(updateOverflowTab)
-}
+});
 
 const getAllTabs = (call) => {
   chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, call)
@@ -34,9 +32,10 @@ const updateTabTitles = () => {
 const updateOverflowTab = (tabs) => {
 
   if (tabs.length > 8 && !overflowExists) {
-    chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: true},
+    chrome.tabs.create({url: chrome.extension.getURL('overflow.html')},
     (tab) => {
       overflowId = tab.id;
+      purgatoryTab = tabs[3];
     })
     overflowExists = true;
   }
@@ -58,7 +57,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       chrome.tabs.sendMessage(sender.tab.id, {type: "SET_TITLE", index: sender.tab.index});
       break;
     case "REQUEST_TABS":
-      chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, updateOverflowTab)
+      chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, updateOverflowTab);
       break;
     case "OPEN_TAB":
       chrome.tabs.create({url: message.url, index: 7});
@@ -66,6 +65,10 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     case "DESTROY_OVERFLOW":
       chrome.tabs.remove(overflowId);
       overflowExists = false;
+      break;
+    case "REQUEST_PURGATORY":
+        chrome.tabs.sendMessage(overflowId, {type: "PURGATORY", tab: purgatoryTab});
+        purgatoryHandled = true;
       break;
     default:
       console.log('hooray!');
