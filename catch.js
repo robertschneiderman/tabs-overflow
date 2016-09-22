@@ -1,4 +1,34 @@
 let nodeList = [];
+
+const favCompare = (a, b) => {
+  aFav = a.firstChild.getAttribute('src')
+  bFav = b.firstChild.getAttribute('src')
+
+  if (aFav < bFav) {
+    return -1
+  } else {
+    return 1
+  }
+}
+
+const stackCompare = (a,b) => {
+  nodeList.indexOf(a) - nodeList.indexOf(b)
+}
+
+const reverseStackCompare = (a,b) => {
+  nodeList.indexOf(b) - nodeList.indexOf(a)
+}
+
+const alphabetCompare = (a,b) => {
+  aTitle = a.lastChild.innerHTML;
+  bTitle = b.lastChild.innerHTML;
+  if (aTitle < bTitle) {
+    return -1
+  } else {
+    return 1
+  }
+}
+
 const ruleList = [favCompare, stackCompare, reverseStackCompare, alphabetCompare];
 let selectedRule = 0;
 
@@ -50,35 +80,6 @@ const customArmageddon = (tabList) => {
   newNode.forEach((el) => {
     tabList.appendChild(el)
   })
-}
-
-const favCompare = (a, b) => {
-  aFav = a.firstChild.getAttribute('src')
-  bFav = b.firstChild.getAttribute('src')
-
-  if (aFav < bFav) {
-    return -1
-  } else {
-    return 1
-  }
-}
-
-const stackCompare = (a,b) => {
-  nodeList.indexOf(a) - nodeList.indexOf(b)
-}
-
-const reverseStackCompare = (a,b) => {
-  nodeList.indexOf(b) - nodeList.indexOf(a)
-}
-
-const alphabetCompare = (a,b) => {
-  aTitle = a.lastChild.innerHTML;
-  bTitle = b.lastChild.innerHTML;
-  if (aTitle < bTitle) {
-    return -1
-  } else {
-    return 1
-  }
 }
 
 chrome.runtime.onMessage.addListener((message) => {
