@@ -14,11 +14,13 @@ chrome.runtime.onMessage.addListener(message => {
         title.innerHTML = `${message.index + 1}` + " " + titleI
         break;
       case "FETCH_TAB":
-        let list = document.getElementById("overflow-list");
-        let url = list.lastChild.getAttribute('data-url');
+        selId = nodeList.shift().getAttribute('data-id')
+        selItem = document.querySelector(`[data-id="${selId}"]`)
+        let url = selItem.getAttribute('data-url');
         chrome.runtime.sendMessage({type: "OPEN_TAB", url: url});
-        list.lastChild.remove();
-        if (!list.lastChild) {
+        selItem.remove();
+        let li = document.querySelectorAll('li')
+        if (li.length === 0) {
           chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
         }
         break;

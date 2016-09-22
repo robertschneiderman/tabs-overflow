@@ -1,4 +1,4 @@
-
+let nodeList = [];
 
 let alreadyCreated = (tabList, message) => {
   for (let i = 0; i < tabList.children.length; i++) {
@@ -44,6 +44,7 @@ chrome.runtime.onMessage.addListener((message) => {
       let tabList = document.getElementById("overflow-list");
       if (!alreadyCreated(tabList, message)) {
         let listItem = createListItem(message.tab);
+        nodeList.push(listItem);
         tabList.appendChild(listItem);
       }
       return true;
