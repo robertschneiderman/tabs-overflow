@@ -84,7 +84,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       overflowExists = false;
       break;
     case "REQUEST_PURGATORY":
-        chrome.tabs.sendMessage(overflowId, {type: "PURGATORY", tab: purgatoryTab});
+        chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
         purgatoryHandled = true;
       break;
     default:
