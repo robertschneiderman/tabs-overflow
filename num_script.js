@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener(message => {
 
 
 document.addEventListener('keydown', (e) => {
-  if (e.which === 91) {
+  if (e.which === 18) {
     chrome.runtime.sendMessage(null, {type: 'SHOW_NUMBERS'})
   }
 });
