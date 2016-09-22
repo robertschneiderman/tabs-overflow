@@ -1,6 +1,8 @@
 * {
   box-sizing: border-box;
   position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -8,5 +10,5 @@ html {
 }
 
 body {
-  
+  padding: 1rem 2rem;
 }

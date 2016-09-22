@@ -69,9 +69,9 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     case "ACTIVATE_TAB":
       chrome.tabs.update(message.tabId, {active: true});
       break;
-    case "UPDATE_TITLE":
-      chrome.tabs.sendMessage(sender.tab.id, {type: "SET_TITLE", index: sender.tab.index});
-      break;
+    // case "UPDATE_TITLE":
+    //   chrome.tabs.sendMessage(sender.tab.id, {type: "SET_TITLE", index: sender.tab.index});
+    //   break;
     case "OPEN_TAB":
       chrome.tabs.create({url: message.url, index: 7});
       break;
@@ -80,8 +80,15 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       overflowExists = false;
       break;
     case "REQUEST_PURGATORY":
-        chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
-        purgatoryHandled = true;
+      chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
+      purgatoryHandled = true;
+      break;
+    case "SHOW_NUMBERS":
+      getAllTabs.forEach(tab => {
+        tab.title = `hey`;
+        // tab.title = `tab.index tab.title`;
+      });
+      // chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
       break;
     default:
   }

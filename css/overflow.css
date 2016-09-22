@@ -1,15 +1,24 @@
-@import url("defaults");
+@import url("defaults.css");
+
+.header-title {display: inline-block;font-size: 2.3rem;font-family: "Avenir";color: #8c8c8c;font-weight: 400;vertical-align: middle;}
+
+.header-tab-count {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 1.4rem;
+}
+
+.overflow-header {display: flex;justify-content: space-between;margin-bottom: 1rem;}
 
 .overflow-list {list-style: none;}
 
-.overflow-item {
+.overflow-item {margin-bottom: 0.3rem;}
 
-}
+.item-img {vertical-align: middle;display: inline-block;margin-right: 0.4rem;width: 1.5rem;}
 
-.item-img {
-
-}
-
-.item-title {
-  
+.item-text {
+  color: #5689c1;
+  vertical-align: middle;
+  display: inline-block;
+  font-size: 1rem;
 }
