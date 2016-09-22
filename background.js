@@ -41,17 +41,17 @@ const updateOverflowTab = (tabs, tab) => {
     chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false},
     (tab) => {
       overflowId = tab.id;
-      purgatoryTab = tabs[3];
+      purgatoryTab = tabs[7];
     })
     overflowExists = true;
   }
 
   if (tabs.length > 9) {
     let doomedTab
-    if (tab.index === 3) {
-      doomedTab = tabs[4];
+    if (tab.index === 7) {
+      doomedTab = tabs[6];
     } else {
-      doomedTab = tabs[3];
+      doomedTab = tabs[7];
     }
     chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab});
     chrome.tabs.remove(doomedTab.id);
@@ -68,7 +68,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     //   chrome.tabs.sendMessage(sender.tab.id, {type: "SET_TITLE", index: sender.tab.index});
     //   break;
     case "OPEN_TAB":
-      chrome.tabs.create({url: message.url, index: 7});
+      chrome.tabs.create({url: message.url, index: 3});
       break;
     case "DESTROY_OVERFLOW":
       chrome.tabs.remove(overflowId);
