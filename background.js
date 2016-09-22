@@ -19,7 +19,6 @@ chrome.tabs.onRemoved.addListener(tab => {
       chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB"})
     }
   });
-  updateTabTitles();
 });
 
 const moveOverflowRight = () => {
@@ -35,15 +34,6 @@ chrome.tabs.onMoved.addListener(() => {
 chrome.tabs.onAttached.addListener(() => {
   moveOverflowRight();
 });
-
-
-const updateTabTitles = () => {
-  getAllTabs((tabs) => {
-    tabs.forEach((tab) => {
-      chrome.tabs.sendMessage(tab.id, {type: "AMEND_TITLE", index: tab.index})
-    });
-  });
-};
 
 const updateOverflowTab = (tabs) => {
 
@@ -84,12 +74,19 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       purgatoryHandled = true;
       break;
     case "SHOW_NUMBERS":
-      getAllTabs.forEach(tab => {
-        tab.title = `hey`;
-        // tab.title = `tab.index tab.title`;
+      getAllTabs(tabs => {
+        tabs.forEach(tab => {
+          chrome.tabs.sendMessage(tab.id, {type: "PREPEND_TITLE", tab: tab});
+        });
       });
-      // chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
       break;
+    case "REMOVE_NUMBERS":
+      getAllTabs(tabs => {
+        tabs.forEach(tab => {
+          chrome.tabs.sendMessage(tab.id, {type: "SHORTEN_TITLE", tab: tab});
+        });
+      });
+      break;      
     default:
   }
 })
