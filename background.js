@@ -84,6 +84,5 @@ chrome.runtime.onMessage.addListener((message, sender) => {
         purgatoryHandled = true;
       break;
     default:
-      console.log('hooray!');
   }
 })

@@ -25,7 +25,6 @@ chrome.runtime.onMessage.addListener(message => {
         }
         break;
     default:
-      console.log('hooray!');
   }
 });
 chrome.runtime.sendMessage({type: "UPDATE_TITLE"})
