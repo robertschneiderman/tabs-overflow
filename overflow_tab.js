@@ -1,11 +1,10 @@
-tabIsCreated = (tabList, message) => {
-  tabList.children.forEach(child => {
-    let childId = child.getAttribute('data-id');
-    if (childId === message.tab.id) {
+let tabIsCreated = (tabList, message) => {
+  for (let i = 0; i < tabList.children.length; i++) {
+    let childId = tabList.children[i].getAttribute('data-id')
+    if (childId == message.tab.id) {
       return true;
     }
-  });  
-
+  }
   return false;
 }
 
@@ -15,7 +14,6 @@ chrome.runtime.onMessage.addListener(message => {
   switch (message.type) {
     case "SEND_TAB":
       let tabList = document.getElementById("overflow-list");
-
       if (!tabIsCreated(tabList, message)) {
         let listItem = document.createElement('li');
         listItem.setAttribute('data-id', message.tab.id);
@@ -33,20 +31,18 @@ chrome.runtime.onMessage.addListener(message => {
           listItem.remove();
           chrome.runtime.sendMessage({type: "OPEN_TAB", url: message.tab.url})
         });
+        tabList.appendChild(listItem);
       }
-      tabList.appendChild(listItem);
       break;
       case "SET_TITLE":
         title = document.querySelector("title")
         titleI = title.innerHTML
-        console.log(title);
         title.innerHTML = `${message.index + 1}` + " " + titleI
         break;
       case "AMEND_TITLE":
         title = document.querySelector("title")
         titleI = title.innerHTML
         titleI = titleI.split(" ").slice(1).join(" ")
-        console.log(title);
         title.innerHTML = `${message.index + 1}` + " " + titleI
         break;
       case "FETCH_TAB":
