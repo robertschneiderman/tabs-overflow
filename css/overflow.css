@@ -3,16 +3,29 @@
 .header-title {display: inline-block;font-size: 2.3rem;font-family: "Avenir";color: #8c8c8c;font-weight: 400;vertical-align: middle;}
 
 .header-tab-count {
+  color: #8c8c8c;
   display: inline-block;
   vertical-align: middle;
   font-size: 1.4rem;
 }
 
-.overflow-header {display: flex;justify-content: space-between;margin-bottom: 1rem;}
+.overflow-header {/* border-bottom: 1px dashed #d8d8d8; */display: flex;justify-content: space-between;margin-bottom: 1.4rem;}
 
 .overflow-list {list-style: none;}
 
-.overflow-item {margin-bottom: 0.3rem;}
+.overflow-item {cursor: pointer; margin-bottom: 0.3rem;}
+.overflow-item:hover::before {
+  color: #a0a0a0;
+  content: 'x';
+  font-size: 1.1rem;
+  font-weight: 300;
+  position: absolute;
+  line-height: 0;
+  z-index: 8000;
+  transform: translateY(-50%);
+  top: 50%;
+  left: -1rem;
+}
 
 .item-img {vertical-align: middle;display: inline-block;margin-right: 0.4rem;width: 1.5rem;}
 
@@ -22,3 +35,23 @@
   display: inline-block;
   font-size: 1rem;
 }
+
+.sort-container {
+  margin-bottom: 1rem;
+}
+
+.sort-label {
+
+}
+
+.sort-select {margin-right: 1rem;}
+
+.sort-checkbox {
+
+}
+
+.sort-checkbox-label {
+  
+}
+.sort-option {
+
