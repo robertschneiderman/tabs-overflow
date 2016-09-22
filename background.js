@@ -4,7 +4,7 @@ let purgatoryTab;
 let purgatoryHandled = false;
 
 chrome.tabs.onCreated.addListener(tab => {
-  getAllTabs(updateOverflowTab)
+  getAllTabs((tabs) => updateOverflowTab(tabs, tab))
   moveOverflowRight();
 });
 
@@ -14,7 +14,7 @@ const getAllTabs = (call) => {
 
 chrome.tabs.onRemoved.addListener(tab => {
   getAllTabs((tabs) => {
-    updateOverflowTab(tabs);
+    updateOverflowTab(tabs, tab);
     if (overflowExists && tabs.length < 9) {
       chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB"})
     }
@@ -35,7 +35,7 @@ chrome.tabs.onAttached.addListener(() => {
   moveOverflowRight();
 });
 
-const updateOverflowTab = (tabs) => {
+const updateOverflowTab = (tabs, tab) => {
 
   if (tabs.length > 8 && !overflowExists) {
     chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false},
@@ -47,7 +47,12 @@ const updateOverflowTab = (tabs) => {
   }
 
   if (tabs.length > 9) {
-    doomedTab = tabs[3]
+    let doomedTab
+    if (tab.index === 3) {
+      doomedTab = tabs[4];
+    } else {
+      doomedTab = tabs[3];
+    }
     chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab});
     chrome.tabs.remove(doomedTab.id);
   }
