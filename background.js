@@ -38,7 +38,7 @@ chrome.tabs.onAttached.addListener(() => {
 const updateOverflowTab = (tabs) => {
 
   if (tabs.length > 8 && !overflowExists) {
-    chrome.tabs.create({url: chrome.extension.getURL('overflow.html')},
+    chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false},
     (tab) => {
       overflowId = tab.id;
       purgatoryTab = tabs[3];
@@ -86,7 +86,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
           chrome.tabs.sendMessage(tab.id, {type: "SHORTEN_TITLE", tab: tab});
         });
       });
-      break;      
+      break;
     default:
   }
 })
