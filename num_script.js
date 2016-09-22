@@ -20,5 +20,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 document.addEventListener('keyup', (e) => {
-  chrome.runtime.sendMessage(null, {type: 'REMOVE_NUMBERS'})
+  if (e.which === 18) {
+    chrome.runtime.sendMessage(null, {type: 'REMOVE_NUMBERS'});
+  }
 });
