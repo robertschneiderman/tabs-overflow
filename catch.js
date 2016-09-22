@@ -11,7 +11,7 @@ const favCompare = (a, b) => {
   }
 }
 
-const reverseSort = (callback) = {
+const reverseSort = (callback) => {
   return (a, b) => (callback(b, a))
 }
 
@@ -30,7 +30,7 @@ const alphabetCompare = (a,b) => {
 }
 
 const ruleList = [favCompare, stackCompare, alphabetCompare,
-  reverseSort(favCompare), reverseSort(stackCompare), reverseSore(alphabetCompare)];
+  reverseSort(favCompare), reverseSort(stackCompare), reverseSort(alphabetCompare)];
 let selectedRule = 0;
 
 let alreadyCreated = (tabList, message) => {
