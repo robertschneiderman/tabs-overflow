@@ -38,6 +38,23 @@ const createListItem = (tab) => {
   return listItem;
 }
 
+const customAppend = (tabList, listItem) => {
+  domList = document.querySelectorAll('li')
+  let insertionIdx;
+  for (let i = 0; i < domList.length; i++) {
+    if (domList[i].getAttribute('data-url') > listItem.getAttribute('data-url')) {
+      console.log([domList[i].getAttribute('data-url'),listItem.getAttribute('data-url')]);
+      insertionIdx = i;
+      break;
+    }
+  }
+  if (insertionIdx) {
+    tabList.insertBefore(listItem, domList[insertionIdx])
+  } else {
+    tabList.appendChild(listItem)
+  }
+}
+
 chrome.runtime.onMessage.addListener((message) => {
   switch (message.type) {
     case "SEND_TAB":
@@ -45,7 +62,8 @@ chrome.runtime.onMessage.addListener((message) => {
       if (!alreadyCreated(tabList, message)) {
         let listItem = createListItem(message.tab);
         nodeList.push(listItem);
-        tabList.appendChild(listItem);
+
+        customAppend(tabList, listItem)
       }
       return true;
       break;
