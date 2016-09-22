@@ -71,6 +71,16 @@ chrome.runtime.onMessage.addListener((message) => {
       }
       return true;
       break;
+      case "FETCH_TAB":
+        selId = nodeList.shift().getAttribute('data-id')
+        selItem = document.querySelector(`[data-id="${selId}"]`)
+        let url = selItem.getAttribute('data-url');
+        chrome.runtime.sendMessage({type: "OPEN_TAB", url: url});
+        selItem.remove();
+        if (li.length === 0) {
+          chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
+        }
+        break;
     default:
       return true;
   }
