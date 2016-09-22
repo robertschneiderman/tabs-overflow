@@ -11,12 +11,12 @@ const favCompare = (a, b) => {
   }
 }
 
-const stackCompare = (a,b) => {
-  nodeList.indexOf(a) - nodeList.indexOf(b)
+const reverseSort = (callback) = {
+  return (a, b) => (callback(b, a))
 }
 
-const reverseStackCompare = (a,b) => {
-  nodeList.indexOf(b) - nodeList.indexOf(a)
+const stackCompare = (a,b) => {
+  nodeList.indexOf(a) - nodeList.indexOf(b)
 }
 
 const alphabetCompare = (a,b) => {
@@ -29,7 +29,8 @@ const alphabetCompare = (a,b) => {
   }
 }
 
-const ruleList = [favCompare, stackCompare, reverseStackCompare, alphabetCompare];
+const ruleList = [favCompare, stackCompare, alphabetCompare,
+  reverseSort(favCompare), reverseSort(stackCompare), reverseSore(alphabetCompare)];
 let selectedRule = 0;
 
 let alreadyCreated = (tabList, message) => {
@@ -40,6 +41,22 @@ let alreadyCreated = (tabList, message) => {
     }
   }
   return false;
+}
+
+const handleReverse = () => {
+  selectedRule = (selectedRule + 3) % 6;
+  tabList = document.getElementById('overflow-list')
+  customArmageddon(tabList);
+}
+
+const handleRuleChange = (num) => {
+  if (selectedRule > 2) {
+    selectedRule = num + 3;
+  } else {
+    selectedRule = num;
+  }
+  tabList = document.getElementById('overflow-list')
+  customArmageddon(tabList);
 }
 
 const createFav = (tab) => {
@@ -73,7 +90,7 @@ const createListItem = (tab) => {
 
 const customArmageddon = (tabList) => {
   let newNode = nodeList.slice(0)
-  newNode.sort(favCompare)
+  newNode.sort(ruleList[selectedRule])
   tabList.innerHTML = ""
   newNode.forEach((el) => {
     tabList.appendChild(el)
