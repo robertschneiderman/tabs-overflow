@@ -38,16 +38,20 @@ const createListItem = (tab) => {
   return listItem;
 }
 
-const customAppend = (tabList, listItem) => {
-  domList = document.querySelectorAll('li')
-  let insertionIdx;
+const firstGreater = (fav, domList) => {
   for (let i = 0; i < domList.length; i++) {
-    if (domList[i].getAttribute('data-url') > listItem.getAttribute('data-url')) {
-      console.log([domList[i].getAttribute('data-url'),listItem.getAttribute('data-url')]);
-      insertionIdx = i;
-      break;
+    let otherFav = domList[i].firstChild.getAttribute('src')
+    if (fav < otherFav) {
+      return i;
     }
   }
+}
+
+const customAppend = (tabList, listItem) => {
+  let domList = document.querySelectorAll('li')
+  let fav = listItem.firstChild.getAttribute('src');
+  let insertionIdx;
+  insertionIdx = firstGreater(fav, domList)
   if (insertionIdx) {
     tabList.insertBefore(listItem, domList[insertionIdx])
   } else {
