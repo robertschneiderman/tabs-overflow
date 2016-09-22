@@ -38,24 +38,44 @@ const createListItem = (tab) => {
   return listItem;
 }
 
-const firstGreater = (fav, domList) => {
-  for (let i = 0; i < domList.length; i++) {
-    let otherFav = domList[i].firstChild.getAttribute('src')
-    if (fav < otherFav) {
-      return i;
-    }
-  }
+// const firstGreater = (fav, domList) => {
+//   for (let i = 0; i < domList.length; i++) {
+//     let otherFav = domList[i].firstChild.getAttribute('src')
+//     if (fav < otherFav) {
+//       return i;
+//     }
+//   }
+// }
+//
+// const customAppend = (tabList, listItem) => {
+//   let domList = document.querySelectorAll('li')
+//   let fav = listItem.firstChild.getAttribute('src');
+//   let insertionIdx;
+//   insertionIdx = firstGreater(fav, domList)
+//   if (insertionIdx) {
+//     tabList.insertBefore(listItem, domList[insertionIdx])
+//   } else {
+//     tabList.appendChild(listItem)
+//   }
+// }
+
+const customArmageddon = (tabList) => {
+  let newNode = nodeList.slice(0)
+  newNode.sort(favCompare)
+  tabList.innerHTML = ""
+  newNode.forEach((el) => {
+    tabList.appendChild(el)
+  })
 }
 
-const customAppend = (tabList, listItem) => {
-  let domList = document.querySelectorAll('li')
-  let fav = listItem.firstChild.getAttribute('src');
-  let insertionIdx;
-  insertionIdx = firstGreater(fav, domList)
-  if (insertionIdx) {
-    tabList.insertBefore(listItem, domList[insertionIdx])
+const favCompare = (a, b) => {
+  aFav = a.firstChild.getAttribute('src')
+  bFav = b.firstChild.getAttribute('src')
+
+  if (aFav < bFav) {
+    return -1
   } else {
-    tabList.appendChild(listItem)
+    return 1
   }
 }
 
@@ -66,8 +86,8 @@ chrome.runtime.onMessage.addListener((message) => {
       if (!alreadyCreated(tabList, message)) {
         let listItem = createListItem(message.tab);
         nodeList.push(listItem);
-
-        customAppend(tabList, listItem)
+        customArmageddon(tabList);
+        // customAppend(tabList,listItem);
       }
       return true;
       break;
