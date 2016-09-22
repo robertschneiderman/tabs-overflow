@@ -32,9 +32,6 @@ const alphabetCompare = (a,b) => {
 const ruleList = [favCompare, stackCompare, reverseStackCompare, alphabetCompare];
 let selectedRule = 0;
 
-
-
-
 let alreadyCreated = (tabList, message) => {
   for (let i = 0; i < tabList.children.length; i++) {
     let childId = tabList.children[i].getAttribute('data-id')
@@ -67,6 +64,7 @@ const createListItem = (tab) => {
   listItem.appendChild(createFav(tab));
   listItem.appendChild(createSpan(tab));
   listItem.addEventListener('click', () => {
+    nodeList = nodeList.filter(el => (el.getAttribute('data-id') !== `${tab.id}`) )
     listItem.remove();
     chrome.runtime.sendMessage({type: "OPEN_TAB", url: tab.url})
   });
