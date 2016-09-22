@@ -1,13 +1,3 @@
-let tabIsCreated = (tabList, message) => {
-  for (let i = 0; i < tabList.children.length; i++) {
-    let childId = tabList.children[i].getAttribute('data-id')
-    if (childId == message.tab.id) {
-      return true;
-    }
-  }
-  return false;
-}
-
 chrome.runtime.onMessage.addListener(message => {
   let title;
   let titleI;
