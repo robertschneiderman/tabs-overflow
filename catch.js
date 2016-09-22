@@ -1,4 +1,9 @@
 let nodeList = [];
+const ruleList = [favCompare, stackCompare, reverseStackCompare, alphabetCompare];
+let selectedRule = 0;
+
+
+
 
 let alreadyCreated = (tabList, message) => {
   for (let i = 0; i < tabList.children.length; i++) {
@@ -38,27 +43,6 @@ const createListItem = (tab) => {
   return listItem;
 }
 
-// const firstGreater = (fav, domList) => {
-//   for (let i = 0; i < domList.length; i++) {
-//     let otherFav = domList[i].firstChild.getAttribute('src')
-//     if (fav < otherFav) {
-//       return i;
-//     }
-//   }
-// }
-//
-// const customAppend = (tabList, listItem) => {
-//   let domList = document.querySelectorAll('li')
-//   let fav = listItem.firstChild.getAttribute('src');
-//   let insertionIdx;
-//   insertionIdx = firstGreater(fav, domList)
-//   if (insertionIdx) {
-//     tabList.insertBefore(listItem, domList[insertionIdx])
-//   } else {
-//     tabList.appendChild(listItem)
-//   }
-// }
-
 const customArmageddon = (tabList) => {
   let newNode = nodeList.slice(0)
   newNode.sort(favCompare)
@@ -79,6 +63,24 @@ const favCompare = (a, b) => {
   }
 }
 
+const stackCompare = (a,b) => {
+  nodeList.indexOf(a) - nodeList.indexOf(b)
+}
+
+const reverseStackCompare = (a,b) => {
+  nodeList.indexOf(b) - nodeList.indexOf(a)
+}
+
+const alphabetCompare = (a,b) => {
+  aTitle = a.lastChild.innerHTML;
+  bTitle = b.lastChild.innerHTML;
+  if (aTitle < bTitle) {
+    return -1
+  } else {
+    return 1
+  }
+}
+
 chrome.runtime.onMessage.addListener((message) => {
   switch (message.type) {
     case "SEND_TAB":
@@ -87,7 +89,6 @@ chrome.runtime.onMessage.addListener((message) => {
         let listItem = createListItem(message.tab);
         nodeList.push(listItem);
         customArmageddon(tabList);
-        // customAppend(tabList,listItem);
       }
       return true;
       break;
