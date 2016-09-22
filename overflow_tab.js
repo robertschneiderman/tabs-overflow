@@ -27,8 +27,3 @@ chrome.runtime.onMessage.addListener(message => {
   }
 });
 chrome.runtime.sendMessage({type: "UPDATE_TITLE"})
-chrome.runtime.sendMessage({type: "REQUEST_TABS"})
-
-document.addEventListener("DOMContentLoaded", () => {
-  chrome.runtime.sendMessage({type: "REQUEST_TABS"})
-})

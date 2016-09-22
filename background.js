@@ -2,7 +2,6 @@ let overflowExists = false;
 let overflowId = 0;
 let purgatoryTab;
 let purgatoryHandled = false;
-let insertionCounter = 0;
 
 chrome.tabs.onCreated.addListener(tab => {
   getAllTabs(updateOverflowTab)
@@ -72,9 +71,6 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       break;
     case "UPDATE_TITLE":
       chrome.tabs.sendMessage(sender.tab.id, {type: "SET_TITLE", index: sender.tab.index});
-      break;
-    case "REQUEST_TABS":
-      chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, updateOverflowTab);
       break;
     case "OPEN_TAB":
       chrome.tabs.create({url: message.url, index: 7});
