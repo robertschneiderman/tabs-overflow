@@ -2,11 +2,12 @@ let overflowId = 0;
 let purgatoryTab;
 let purgatoryHandled = false;
 let active = true;
+let numSafeTabs = 3;
 
 const createdListen = (tab) => {
   getAllTabs((tabs) => updateOverflowTab(tabs, tab))
   if (overflowId > 0) {
-    chrome.tabs.move(tab.id, {index: 3})
+    chrome.tabs.move(tab.id, {index: numSafeTabs})
   }
   moveOverflowRight();
 }
@@ -63,7 +64,7 @@ const messageListen = (message, sender) => {
       chrome.tabs.update(message.tabId, {active: true});
       break;
     case "OPEN_TAB":
-      chrome.tabs.create({url: message.url, index: 3, active: false});
+      chrome.tabs.create({url: message.url, index: numSafeTabs, active: false});
       break;
     case "DESTROY_OVERFLOW":
       chrome.tabs.remove(overflowId);
@@ -73,21 +74,25 @@ const messageListen = (message, sender) => {
       chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
       purgatoryHandled = true;
       break;
-    case "SHOW_NUMBERS":
-      getAllTabs(tabs => {
-        tabs.forEach(tab => {
-          chrome.tabs.sendMessage(tab.id, {type: "PREPEND_TITLE", tab: tab});
-        });
-      });
-      break;
-    case "REMOVE_NUMBERS":
-      getAllTabs(tabs => {
-        tabs.forEach(tab => {
-          chrome.tabs.sendMessage(tab.id, {type: "SHORTEN_TITLE", tab: tab});
-        });
-      });
+    // case "SHOW_NUMBERS":
+    //   getAllTabs(tabs => {
+    //     tabs.forEach(tab => {
+    //       chrome.tabs.sendMessage(tab.id, {type: "PREPEND_TITLE", tab: tab});
+    //     });
+    //   });
+    //   break;
+    // case "REMOVE_NUMBERS":
+    //   getAllTabs(tabs => {
+    //     tabs.forEach(tab => {
+    //       chrome.tabs.sendMessage(tab.id, {type: "SHORTEN_TITLE", tab: tab});
+    //     });
+    //   });
+    //   break;
+    case "NUM_SAFE_TABS":
+      numSafeTabs = message.num;
       break;
     default:
+      return true;
   }
 }
 

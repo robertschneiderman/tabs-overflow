@@ -61,6 +61,10 @@ const handleRuleChange = (num) => {
   customArmageddon(tabList);
 }
 
+const handleSafeTabs = (num) => {
+  chrome.runtime.sendMessage({type: "NUM_SAFE_TABS", num: num})
+}
+
 const createCloseBtn = (listItem, tab) => {
   let closeBtn = document.createElement('span');
   closeBtn.classList.add('overflow-item-close-btn');
