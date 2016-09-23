@@ -14,13 +14,5 @@
   "permissions": [
     "tabs",
     "history"
-  ],
-  "content_scripts": [{
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["num_script.js"]
-    },{
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["overflow_tab.js"]
-    }
-    ]
+  ]
 }

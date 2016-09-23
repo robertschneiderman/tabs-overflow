@@ -1,21 +1,21 @@
 let overflowId = 0;
 let purgatoryTab;
 let purgatoryHandled = false;
+let active = true;
 
-chrome.tabs.onCreated.addListener(tab => {
-
+const createdListen = (tab) => {
   getAllTabs((tabs) => updateOverflowTab(tabs, tab))
   if (overflowId > 0) {
     chrome.tabs.move(tab.id, {index: 3})
   }
   moveOverflowRight();
-});
+}
 
 const getAllTabs = (call) => {
   chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, call)
 };
 
-chrome.tabs.onRemoved.addListener(tab => {
+const removedListen = (tab) => {
   if (tab === overflowId) {
     overflowId = 0;
   }
@@ -25,7 +25,7 @@ chrome.tabs.onRemoved.addListener(tab => {
       chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB"})
     }
   });
-});
+}
 
 const moveOverflowRight = () => {
   if (overflowId > 0) {
@@ -33,13 +33,7 @@ const moveOverflowRight = () => {
   }
 };
 
-chrome.tabs.onMoved.addListener(() => {
-  moveOverflowRight();
-});
 
-chrome.tabs.onAttached.addListener(() => {
-  moveOverflowRight();
-});
 
 const updateOverflowTab = (tabs, tab) => {
 
@@ -63,8 +57,7 @@ const updateOverflowTab = (tabs, tab) => {
   }
 };
 
-
-chrome.runtime.onMessage.addListener((message, sender) => {
+const messageListen = (message, sender) => {
   switch (message.type) {
     case "ACTIVATE_TAB":
       chrome.tabs.update(message.tabId, {active: true});
@@ -96,4 +89,27 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       break;
     default:
   }
+}
+
+const listenOn = () => {
+  chrome.tabs.onRemoved.addListener(removedListen);
+  chrome.runtime.onMessage.addListener(messageListen);
+  chrome.tabs.onMoved.addListener(moveOverflowRight);
+  chrome.tabs.onAttached.addListener(moveOverflowRight);
+  chrome.tabs.onCreated.addListener(createdListen);
+}
+
+listenOn()
+
+chrome.browserAction.onClicked.addListener( () => {
+  if (active) {
+    chrome.runtime.onMessage.removeListener(messageListen);
+    chrome.tabs.onCreated.removeListener(createdListen);
+    chrome.tabs.onRemoved.removeListener(removedListen);
+    chrome.tabs.onMoved.removeListener(moveOverflowRight);
+    chrome.tabs.onAttached.removeListener(moveOverflowRight);
+  } else {
+    listenOn();
+  }
+  active = !active
 })
