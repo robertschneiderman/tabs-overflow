@@ -91,6 +91,23 @@ const messageListen = (message, sender) => {
   }
 }
 
+const pack = () => {
+  chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false, index: 8},
+  (tab) => {
+    overflowId = tab.id;
+  })
+  setTimeout( () => {
+    getAllTabs((tabs) => {
+      tabs.forEach((tab) => {
+        if (tab.index > 8) {
+          chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: tab})
+          chrome.tabs.remove(tab.id)
+        }
+      })
+    })
+  }, 1000)
+}
+
 const listenOn = () => {
   chrome.tabs.onRemoved.addListener(removedListen);
   chrome.runtime.onMessage.addListener(messageListen);
@@ -110,6 +127,7 @@ chrome.browserAction.onClicked.addListener( () => {
     chrome.tabs.onAttached.removeListener(moveOverflowRight);
   } else {
     listenOn();
+    pack();
   }
   active = !active
 })
