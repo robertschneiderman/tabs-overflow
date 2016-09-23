@@ -1,8 +1,8 @@
 let nodeList = [];
 
 const favCompare = (a, b) => {
-  aFav = a.firstChild.getAttribute('src')
-  bFav = b.firstChild.getAttribute('src')
+  aFav = a.children[1].getAttribute('src')
+  bFav = b.children[1].getAttribute('src')
 
   if (aFav < bFav) {
     return -1
