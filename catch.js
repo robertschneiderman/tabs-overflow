@@ -145,19 +145,31 @@ document.addEventListener("DOMContentLoaded", () => {
   let siteLi = document.getElementById('site-li')
   let queueLi = document.getElementById('queue-li')
   let titleLi = document.getElementById('title-li')
+  let reverseCb = document.getElementById('sort-checkbox')
 
   siteLi.addEventListener("click", e => {
     e.preventDefault();
+    setSelectValue('Site')
     handleRuleChange(0);
   });
 
   queueLi.addEventListener("click", e => {
     e.preventDefault();
+    setSelectValue('Queue')
     handleRuleChange(1);
   });
 
   titleLi.addEventListener("click", e => {
     e.preventDefault();
+    setSelectValue('Title')
     handleRuleChange(2);
   });
+
+  reverseCb.addEventListener("click", e => {
+    handleReverse();
+  });  
 });
+
+const setSelectValue = val => {
+  document.getElementById('sort-select').innerHTML = val;
+}
