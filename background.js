@@ -108,9 +108,6 @@ const pack = () => {
   }, 1000)
 }
 
-const unpack = () => {
-}
-
 const listenOn = () => {
   chrome.tabs.onRemoved.addListener(removedListen);
   chrome.runtime.onMessage.addListener(messageListen);
@@ -128,10 +125,12 @@ chrome.browserAction.onClicked.addListener( () => {
     chrome.tabs.onRemoved.removeListener(removedListen);
     chrome.tabs.onMoved.removeListener(moveOverflowRight);
     chrome.tabs.onAttached.removeListener(moveOverflowRight);
-    upack();
+    chrome.browserAction.setIcon({path: "icon-grey.png"})
+    chrome.tabs.sendMessage(overflowId, {type: 'UNPACK'})
   } else {
     listenOn();
     pack();
+    chrome.browserAction.setIcon({path: "icon.png"})
   }
   active = !active
 })
