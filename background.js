@@ -116,6 +116,15 @@ const listenOn = () => {
   chrome.tabs.onCreated.addListener(createdListen);
 }
 
+const closeListen = (message, sender) => {
+  if (message.type = "UNPACK_TABS") {
+    message.urlList.forEach((url) => {
+      chrome.tabs.create({url: url, active: false})
+    })
+    chrome.tabs.remove(overflowId)
+  }
+}
+
 listenOn()
 
 chrome.browserAction.onClicked.addListener( () => {
@@ -125,12 +134,14 @@ chrome.browserAction.onClicked.addListener( () => {
     chrome.tabs.onRemoved.removeListener(removedListen);
     chrome.tabs.onMoved.removeListener(moveOverflowRight);
     chrome.tabs.onAttached.removeListener(moveOverflowRight);
-    chrome.browserAction.setIcon({path: "icon-grey.png"})
-    chrome.tabs.sendMessage(overflowId, {type: 'UNPACK'})
+    chrome.runtime.onMessage.addListener(closeListen);
+    chrome.browserAction.setIcon({path: "icon-grey.png"});
+    chrome.tabs.sendMessage(overflowId, {type: 'UNPACK'});
   } else {
+    chrome.runtime.onMessage.removeListener(closeListen);
     listenOn();
     pack();
-    chrome.browserAction.setIcon({path: "icon.png"})
+    chrome.browserAction.setIcon({path: "icon.png"});
   }
   active = !active
 })

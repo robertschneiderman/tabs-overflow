@@ -114,9 +114,9 @@ const customArmageddon = (tabList) => {
 }
 
 chrome.runtime.onMessage.addListener((message) => {
+  let tabList = document.getElementById("overflow-list");
   switch (message.type) {
     case "SEND_TAB":
-      let tabList = document.getElementById("overflow-list");
       if (!alreadyCreated(tabList, message)) {
         let listItem = createListItem(message.tab);
         nodeList.push(listItem);
@@ -124,16 +124,22 @@ chrome.runtime.onMessage.addListener((message) => {
       }
       return true;
       break;
-      case "FETCH_TAB":
-        selId = nodeList.pop().getAttribute('data-id')
-        selItem = document.querySelector(`[data-id="${selId}"]`)
-        let url = selItem.getAttribute('data-url');
-        chrome.runtime.sendMessage({type: "OPEN_TAB", url: url});
-        selItem.remove();
-        if (nodeList.length === 0) {
-          chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
-        }
-        break;
+    case "FETCH_TAB":
+      let selId = nodeList.pop().getAttribute('data-id')
+      let selItem = document.querySelector(`[data-id="${selId}"]`)
+      let url = selItem.getAttribute('data-url');
+      chrome.runtime.sendMessage({type: "OPEN_TAB", url: url});
+      selItem.remove();
+      if (nodeList.length === 0) {
+        chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
+      }
+      break;
+    case "UNPACK":
+      urlList = nodeList.map((el) => {
+        return el.getAttribute('data-url');
+      });
+      chrome.runtime.sendMessage({type: "UNPACK_TABS", urlList: urlList})
+      break;
     default:
       return true;
   }
