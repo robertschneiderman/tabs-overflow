@@ -4,8 +4,11 @@ let purgatoryTab;
 let purgatoryHandled = false;
 
 chrome.tabs.onCreated.addListener(tab => {
+
   getAllTabs((tabs) => updateOverflowTab(tabs, tab))
-  chrome.tabs.move(tab.id, {index: 3})
+  if (overflowExists) {
+    chrome.tabs.move(tab.id, {index: 3})
+  }
   moveOverflowRight();
 });
 
