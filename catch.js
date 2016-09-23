@@ -31,7 +31,7 @@ const alphabetCompare = (a,b) => {
 
 const ruleList = [favCompare, stackCompare, alphabetCompare,
   reverseSort(favCompare), reverseSort(stackCompare), reverseSort(alphabetCompare)];
-let selectedRule = 1;
+let selectedRule = 0;
 
 let alreadyCreated = (tabList, message) => {
   for (let i = 0; i < tabList.children.length; i++) {
