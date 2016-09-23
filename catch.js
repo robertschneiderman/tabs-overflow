@@ -178,6 +178,16 @@ document.addEventListener("DOMContentLoaded", () => {
   reverseCb.addEventListener("click", e => {
     handleReverse();
   });
+
+  let numOptions = document.querySelectorAll('.num-option');
+
+  for (let i = 0; i < numOptions.length; i++) {
+    numOptions[i].addEventListener('click', () => {
+      idStr = numOptions[i].getAttribute('id');
+      id = parseInt(idStr[idStr.length - 1],10)
+      handleSafeTabs(id)
+    })
+  }
 });
 
 const setSelectValue = val => {
