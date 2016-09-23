@@ -16,9 +16,9 @@ const reverseSort = (callback) => {
 }
 
 const stackCompare = (a,b) => {
-  let aNode = nodeList.filter( el => (el.getAttribute('data-id') == a.getAttribute('data-id')))[0]
-  let bNode = nodeList.filter( el => (el.getAttribute('data-id') == b.getAttribute('data-id')))[0]
-  nodeList.indexOf(aNode) - nodeList.indexOf(bNode)
+  let aNode = nodeList.filter( el => (el.getAttribute('data-id') === a.getAttribute('data-id')))[0]
+  let bNode = nodeList.filter( el => (el.getAttribute('data-id') === b.getAttribute('data-id')))[0]
+  return nodeList.indexOf(aNode) - nodeList.indexOf(bNode)
 }
 
 const alphabetCompare = (a,b) => {
