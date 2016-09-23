@@ -69,7 +69,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     //   chrome.tabs.sendMessage(sender.tab.id, {type: "SET_TITLE", index: sender.tab.index});
     //   break;
     case "OPEN_TAB":
-      chrome.tabs.create({url: message.url, index: 3});
+      chrome.tabs.create({url: message.url, index: 3, active: false});
       break;
     case "DESTROY_OVERFLOW":
       chrome.tabs.remove(overflowId);
