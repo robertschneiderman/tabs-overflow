@@ -48,10 +48,10 @@ const updateOverflowTab = (tabs, tab) => {
 
   if (tabs.length > 9) {
     let doomedTab
-    if (tab.index === 7) {
-      doomedTab = tabs[6];
-    } else {
+    if (tab.index === 8) {
       doomedTab = tabs[7];
+    } else {
+      doomedTab = tabs[8];
     }
     chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab});
     chrome.tabs.remove(doomedTab.id);
