@@ -16,8 +16,8 @@ const reverseSort = (callback) => {
 }
 
 const stackCompare = (a,b) => {
-  let aNode = nodeList.filter( el => (el.getAttribute('data-id') == a.getAttribute('data-id'))[0]
-  let bNode = nodeList.filter( el => (el.getAttribute('data-id') == b.getAttribute('data-id'))[0]
+  let aNode = nodeList.filter( el => (el.getAttribute('data-id') == a.getAttribute('data-id')))[0]
+  let bNode = nodeList.filter( el => (el.getAttribute('data-id') == b.getAttribute('data-id')))[0]
   nodeList.indexOf(aNode) - nodeList.indexOf(bNode)
 }
 
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   reverseCb.addEventListener("click", e => {
     handleReverse();
-  });  
+  });
 });
 
 const setSelectValue = val => {
