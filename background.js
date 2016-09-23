@@ -1,4 +1,3 @@
-let overflowExists = false;
 let overflowId = 0;
 let purgatoryTab;
 let purgatoryHandled = false;
@@ -6,7 +5,7 @@ let purgatoryHandled = false;
 chrome.tabs.onCreated.addListener(tab => {
 
   getAllTabs((tabs) => updateOverflowTab(tabs, tab))
-  if (overflowExists) {
+  if (overflowId > 0) {
     chrome.tabs.move(tab.id, {index: 3})
   }
   moveOverflowRight();
@@ -18,12 +17,11 @@ const getAllTabs = (call) => {
 
 chrome.tabs.onRemoved.addListener(tab => {
   if (tab === overflowId) {
-    overflowExists = false;
     overflowId = 0;
   }
   getAllTabs((tabs) => {
     updateOverflowTab(tabs, tab);
-    if (overflowExists && tabs.length < 9) {
+    if (overflowId > 0 && tabs.length < 9) {
       chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB"})
     }
   });
@@ -45,13 +43,12 @@ chrome.tabs.onAttached.addListener(() => {
 
 const updateOverflowTab = (tabs, tab) => {
 
-  if (tabs.length > 8 && !overflowExists) {
+  if (tabs.length > 8 && overflowId === 0) {
     chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false},
     (tab) => {
       overflowId = tab.id;
       purgatoryTab = tabs[7];
     })
-    overflowExists = true;
   }
 
   if (tabs.length > 9) {
@@ -72,15 +69,12 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     case "ACTIVATE_TAB":
       chrome.tabs.update(message.tabId, {active: true});
       break;
-    // case "UPDATE_TITLE":
-    //   chrome.tabs.sendMessage(sender.tab.id, {type: "SET_TITLE", index: sender.tab.index});
-    //   break;
     case "OPEN_TAB":
       chrome.tabs.create({url: message.url, index: 3, active: false});
       break;
     case "DESTROY_OVERFLOW":
       chrome.tabs.remove(overflowId);
-      overflowExists = false;
+      overflowId = 0;
       break;
     case "REQUEST_PURGATORY":
       chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
