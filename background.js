@@ -14,8 +14,7 @@ const getAllTabs = (call) => {
 };
 
 chrome.tabs.onRemoved.addListener(tab => {
-  if (tab.id === overflowId) {
-    console.log("here");
+  if (tab === overflowId) {
     overflowExists = false;
     overflowId = 0;
   }
