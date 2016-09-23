@@ -18,8 +18,10 @@
 
 }*/
 
+
 .overflow-item-close-btn {
   color: #a0a0a0;
+  display: none;
   font-size: 1.1rem;
   font-weight: 300;
   position: absolute;
@@ -30,6 +32,10 @@
   left: 0rem;
   width: 1rem;
   height: 1rem;
+}
+
+.overflow-item:hover .overflow-item-close-btn {
+  display: block;
 }
 
 .item-img {vertical-align: middle;display: inline-block;margin-right: 0.4rem;width: 1.5rem;}
