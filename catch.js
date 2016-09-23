@@ -59,6 +59,19 @@ const handleRuleChange = (num) => {
   customArmageddon(tabList);
 }
 
+const createCloseBtn = (listItem, tab) => {
+  let closeBtn = document.createElement('span');
+  closeBtn.classList.add('overflow-item-close-btn');
+  closeBtn.innerHTML = 'x';
+  closeBtn.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    nodeList = nodeList.filter(el => (el.getAttribute('data-id') !== `${tab.id}`) )
+    listItem.remove();
+  });
+  return closeBtn;   
+}
+
 const createFav = (tab) => {
   let fav = document.createElement('img');
   fav.classList.add('item-img');
@@ -70,7 +83,7 @@ const createSpan = (tab) => {
   let spn = document.createElement('span');
   spn.innerHTML = tab.title;
   spn.classList.add('item-text');
-  return spn;
+  return spn;  
 }
 
 const createListItem = (tab) => {
@@ -78,6 +91,7 @@ const createListItem = (tab) => {
   listItem.setAttribute('data-id', tab.id);
   listItem.setAttribute('data-url', tab.url);
   listItem.classList.add('overflow-item');
+  listItem.appendChild(createCloseBtn(listItem, tab));
   listItem.appendChild(createFav(tab));
   listItem.appendChild(createSpan(tab));
   listItem.addEventListener('click', () => {
@@ -85,6 +99,16 @@ const createListItem = (tab) => {
     listItem.remove();
     chrome.runtime.sendMessage({type: "OPEN_TAB", url: tab.url})
   });
+
+  // let closeBtns = document.querySelectorAll('.overflow-item');
+
+  // for (var i = 0; i < closeBtns.length; i++) {
+  //   closeBtns[i].addEventListener('click', e => {
+  //     e.preventDefault();
+  //     console.log("clicked x?");
+  //   });
+  // };
+
   return listItem;
 }
 
@@ -124,5 +148,24 @@ chrome.runtime.onMessage.addListener((message) => {
 })
 
 document.addEventListener("DOMContentLoaded", () => {
-  chrome.runtime.sendMessage({type: "REQUEST_PURGATORY"})
-})
+  chrome.runtime.sendMessage({type: "REQUEST_PURGATORY"});
+
+  let siteLi = document.getElementById('site-li')
+  let queueLi = document.getElementById('queue-li')
+  let titleLi = document.getElementById('title-li')
+
+  siteLi.addEventListener("click", e => {
+    e.preventDefault();
+    handleRuleChange(0);
+  });
+
+  queueLi.addEventListener("click", e => {
+    e.preventDefault();
+    handleRuleChange(1);
+  });
+
+  titleLi.addEventListener("click", e => {
+    e.preventDefault();
+    handleRuleChange(2);
+  });
+});

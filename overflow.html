@@ -21,11 +21,19 @@
 
   <div class="sort-container">
     <label class="sort-label" for="select-sort">Sort By:</label>
-    <select id="sort-select" class="sort-select" name="">
+    <div class="sort-select">
+      <p class="sort-value">Site</p>
+      <ul class="sort-dropdown">
+        <li id="site-li" class="sort-option">Site</li>
+        <li id="queue-li" class="sort-option">Queue</li>
+        <li id="title-li" class="sort-option">Title</li>
+      </ul>
+    </div>
+<!--     <select id="sort-select" class="sort-select" name="">
       <option class="sort-option" value="" selected>Site</option>
       <option class="sort-option" value="">Queue</option>
       <option class="sort-option" value="">Title</option>
-    </select>
+    </select> -->
 
     <input class="sort-checkbox" type="checkbox">
     <label class="sort-checkbox-label" for="sort-checkbox">Reverse</label>
