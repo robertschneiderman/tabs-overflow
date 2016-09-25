@@ -1,5 +1,9 @@
 @import url("defaults.css");
 
+
+.dropdown-option {/* margin-bottom: 0.3rem; */padding: 0.3rem 0.6rem;}
+.dropdown-option:hover {background-color: #ebfdfd;}
+
 .header-title {display: inline-block;font-size: 2.3rem;font-family: "Avenir";color: #8c8c8c;font-weight: 400;vertical-align: middle;}
 
 .header-tab-count {
@@ -7,6 +11,50 @@
   display: inline-block;
   vertical-align: middle;
   font-size: 1.4rem;
+}
+
+.input {border: 1px solid #b1b1b1;border-radius: 1.2px;padding: .25rem 0.4rem;width: 4rem;display: block;}
+
+
+.input::before {
+  width: 0;
+  height: 0;
+  content: "";
+  position: absolute;
+  right: 0.2rem;
+  top: 0.25rem;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #969696;
+}
+
+.input::after {
+  width: 0;
+  height: 0;
+  content: "";
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.2rem;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #969696;
+}
+
+.option-safe-tabs {margin-top: 8rem;}
+
+.option-value {
+  width: 2.4rem;
+}
+
+.option-dropdown {
+  display: none;
+  background-color: #fff;
+  border: 1px solid #bbb;
+  list-style: none;
+  position: absolute;
+  right: 0;
+  top: 1.45rem;
+  z-index: 8000;
 }
 
 .overflow-header {/* border-bottom: 1px dashed #d8d8d8; */display: flex;justify-content: space-between;margin-bottom: 1rem;}
@@ -47,18 +95,20 @@
   font-size: 1rem;
 }
 
+.select {cursor: pointer;display: inline-block;margin-right: 1rem;}
+
+.select:hover .dropdown {
+  display: block;
+}
+
+
 .sort-container {
+  margin-top: 0rem;
   margin-bottom: 1rem;
 }
 
 .sort-label {
 
-}
-
-.sort-select {cursor: pointer;display: inline-block;margin-right: 1rem;}
-
-.sort-select:hover .sort-dropdown {
-  display: block;
 }
 
 .sort-checkbox {
@@ -80,39 +130,12 @@
   z-index: 8000;
 }
 
-.sort-option {/* margin-bottom: 0.3rem; */padding: 0.3rem 0.6rem;}
-
 /*.sort-option:last-child {margin: 0;}*/
 
-.sort-option:hover {background-color: #ebfdfd;}
-
-.sort-value {border: 1px solid #b1b1b1;border-radius: 1.2px;padding: .25rem 0.4rem;width: 4rem;display: block;}
-
-
-.sort-value::before {
-  width: 0;
-  height: 0;
-  content: "";
-  position: absolute;
-  right: 0.2rem;
-  top: 0.25rem;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid #969696;
-}
-
-.sort-value::after {
-  width: 0;
-  height: 0;
-  content: "";
-  position: absolute;
-  bottom: 0.25rem;
-  right: 0.2rem;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #969696;
+.sort-value {
+  width: 4rem;
 }
 
 .ji {
-  top: -15px;
+  /* top: -15px; */
 }
