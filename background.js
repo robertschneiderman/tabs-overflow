@@ -4,6 +4,18 @@ let purgatoryHandled = false;
 let active = true;
 let numSafeTabs = 3;
 
+let storedActive = chrome.storage.sync.get('activeStatus', (data) => {
+  if (data) {
+    active = data.activeStatus;
+    if (active) {
+      listenOn();
+    }
+  } else {
+    active = true;
+    listenOn();
+  }
+})
+
 const createdListen = (tab) => {
   if (overflowId > 0) {
     chrome.tabs.move(tab.id, {index: numSafeTabs})
@@ -136,10 +148,9 @@ const closeListen = (message, sender) => {
   }
 }
 
-listenOn()
-
 chrome.browserAction.onClicked.addListener( () => {
   if (active) {
+    chrome.storage.sync.set({activeStatus: false})
     chrome.runtime.onMessage.removeListener(messageListen);
     chrome.tabs.onCreated.removeListener(createdListen);
     chrome.tabs.onRemoved.removeListener(removedListen);
@@ -149,6 +160,7 @@ chrome.browserAction.onClicked.addListener( () => {
     chrome.browserAction.setIcon({path: "icon-grey.png"});
     chrome.tabs.sendMessage(overflowId, {type: 'UNPACK'});
   } else {
+    chrome.storage.sync.set({activeStatus: true})
     chrome.runtime.onMessage.removeListener(closeListen);
     listenOn();
     pack();

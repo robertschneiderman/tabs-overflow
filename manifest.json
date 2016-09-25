@@ -13,6 +13,7 @@
   },
   "permissions": [
     "tabs",
-    "history"
+    "history",
+    "storage"
   ]
 }
