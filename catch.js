@@ -36,7 +36,7 @@ const ruleList = [favCompare, stackCompare, alphabetCompare,
 
 let selectedRule = 0;
 chrome.storage.sync.get('selectedRule', (data) => {
-  if (data) {
+  if (Object.keys(data).length > 0) {
     selectedRule = data.selectedRule;
   }
 })
@@ -71,7 +71,9 @@ const handleRuleChange = (num) => {
 }
 
 const handleSafeTabs = (num) => {
-  chrome.runtime.sendMessage({type: "NUM_SAFE_TABS", num: num})
+  chrome.storage.sync.set({safeTabs: num}, () => {
+    chrome.runtime.sendMessage({type: "NUM_SAFE_TABS", num: num})
+  })
 }
 
 const createCloseBtn = (listItem, tab) => {
@@ -188,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     handleReverse();
   });
 
-  let numOptions = document.querySelectorAll('.num-option');
+  let numOptions = document.querySelectorAll('.num');
 
   for (let i = 0; i < numOptions.length; i++) {
     numOptions[i].addEventListener('click', () => {

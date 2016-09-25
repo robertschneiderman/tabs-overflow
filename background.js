@@ -4,8 +4,15 @@ let purgatoryHandled = false;
 let active = true;
 let numSafeTabs = 3;
 
+chrome.storage.sync.get('safeTabs', (data) => {
+  if (Object.keys(data).length > 0) {
+    console.log(data);
+    numSafeTabs = data.safeTabs
+  }
+})
+
 let storedActive = chrome.storage.sync.get('activeStatus', (data) => {
-  if (data) {
+  if (Object.keys(data).length > 0) {
     active = data.activeStatus;
     if (active) {
       listenOn();
