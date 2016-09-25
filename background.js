@@ -5,10 +5,10 @@ let active = true;
 let numSafeTabs = 3;
 
 const createdListen = (tab) => {
-  getAllTabs((tabs) => updateOverflowTab(tabs, tab))
   if (overflowId > 0) {
     chrome.tabs.move(tab.id, {index: numSafeTabs})
   }
+  getAllTabs((tabs) => updateOverflowTab(tabs, tab))
   moveOverflowRight();
 }
 
@@ -46,11 +46,17 @@ const updateOverflowTab = (tabs, tab) => {
     })
   }
 
+  chrome.tabs.query({active: true}, (tabs) => activeIndex = tabs[0].index)
+
   if (tabs.length > 9) {
-    let doomedTab = tabs[7]
-    if (tab.index === 8) {
-      doomedTab = tabs[6];
+    let doomedTab;
+    if (activeIndex === 7) {
+      doomedTab = tabs[7];
     } else {
+      doomedTab = tabs[8];
+    }
+
+    if (activeIndex === 8) {
       doomedTab = tabs[7];
     }
     chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab});
