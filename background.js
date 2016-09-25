@@ -55,8 +55,6 @@ const moveOverflowRight = () => {
   }
 };
 
-
-
 const updateOverflowTab = (tabs, tab) => {
 
   if (tabs.length > 8 && overflowId === 0) {
@@ -66,6 +64,8 @@ const updateOverflowTab = (tabs, tab) => {
       purgatoryTab = tabs[7];
     })
   }
+
+  let activeIndex = 0;
 
   chrome.tabs.query({active: true}, (tabs) => activeIndex = tabs[0].index)
 
@@ -124,20 +124,22 @@ const messageListen = (message, sender) => {
 }
 
 const pack = () => {
-  chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false, index: 8},
-  (tab) => {
-    overflowId = tab.id;
-  })
-  setTimeout( () => {
-    getAllTabs((tabs) => {
-      tabs.forEach((tab) => {
-        if (tab.index > 8) {
-          chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: tab})
-          chrome.tabs.remove(tab.id)
-        }
+  getAllTabs((tabs) => {
+    if (tabs.length > 8) {
+      chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false, index: 8},
+      (tab) => {
+        overflowId = tab.id;
+        setTimeout(() => {
+          tabs.forEach((tab) => {
+            if (tab.index > 8) {
+              chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: tab})
+              chrome.tabs.remove(tab.id)
+            }
+          })
+        }, 1000)
       })
-    })
-  }, 1000)
+    }
+  })
 }
 
 const listenOn = () => {
