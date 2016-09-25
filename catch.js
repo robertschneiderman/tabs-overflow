@@ -33,7 +33,13 @@ const alphabetCompare = (a,b) => {
 
 const ruleList = [favCompare, stackCompare, alphabetCompare,
   reverseSort(favCompare), reverseSort(stackCompare), reverseSort(alphabetCompare)];
+
 let selectedRule = 0;
+chrome.storage.sync.get('selectedRule', (data) => {
+  if (data) {
+    selectedRule = data.selectedRule;
+  }
+})
 
 let alreadyCreated = (tabList, message) => {
   for (let i = 0; i < tabList.children.length; i++) {
@@ -47,6 +53,7 @@ let alreadyCreated = (tabList, message) => {
 
 const handleReverse = () => {
   selectedRule = (selectedRule + 3) % 6;
+  chrome.storage.sync.set({selectedRule: selectedRule})
   tabList = document.getElementById('overflow-list')
   customArmageddon(tabList);
 }
@@ -54,8 +61,10 @@ const handleReverse = () => {
 const handleRuleChange = (num) => {
   if (selectedRule > 2) {
     selectedRule = num + 3;
+    chrome.storage.sync.set({selectedRule: selectedRule})
   } else {
     selectedRule = num;
+    chrome.storage.sync.set({selectedRule: selectedRule})
   }
   tabList = document.getElementById('overflow-list')
   customArmageddon(tabList);

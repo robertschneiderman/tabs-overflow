@@ -9,6 +9,8 @@ let storedActive = chrome.storage.sync.get('activeStatus', (data) => {
     active = data.activeStatus;
     if (active) {
       listenOn();
+    } else {
+      chrome.browserAction.setIcon({path: "icon-grey.png"});
     }
   } else {
     active = true;
