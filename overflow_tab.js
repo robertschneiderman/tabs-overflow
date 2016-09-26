@@ -22,8 +22,8 @@ const stackCompare = (a,b) => {
 }
 
 const alphabetCompare = (a,b) => {
-  aTitle = a.lastChild.innerHTML;
-  bTitle = b.lastChild.innerHTML;
+  aTitle = a.lastChild.innerHTML.toLowerCase();
+  bTitle = b.lastChild.innerHTML.toLowerCase();
   if (aTitle < bTitle) {
     return -1
   } else {
