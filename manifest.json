@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
 
-  "name": "Tab Overflow",
+  "name": "spill-tab",
   "description": "This is an extension for managing navigation with a large number by 'overflowing' excess tabs into an index tab.",
   "version": "1.0",
   "background": {
