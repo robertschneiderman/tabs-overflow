@@ -211,5 +211,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const setSelectValue = val => {
-  document.getElementById('sort-select').innerHTML = val;
+  document.getElementById('sort-value').innerHTML = val;
 }
