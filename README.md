@@ -3,6 +3,8 @@
 
 ## Summary
 
+### Overview
+
 Tabs Overflow is a chrome extension which aims to make navigating with many tabs
 open easier and quicker.  It does this by allowing the user to have 8 tabs open
 at a time and selectively archiving any more than that into an 'overflow tab'
@@ -10,6 +12,21 @@ which holds links to the archived tabs.  Clicking on these links will open them,
 archiving the next tab in line to make room.  Similarly, closing any tab will
 pop open the last tab that was archived.  When enough tabs have been closed that
 the overflow tab is no longer needed, it will politely close itself.
+
+### Walkthrough
+
+Our hapless user has too many tabs open!  With three safe tabs, 5 unsafe tabs,
+and one overflow tab, his browser window looks like this:
+
+![First Walkthrough Image](images/walkthrough_first.png)
+
+Suppose that our user would like to read about tubers.  They click on the
+'Wikipedia Tuber' link.  What happens next?  Since there are three safe tabs,
+the tuber link is opened in the fourth tab. All subsequent tabs are pushed to
+the right one.  The last tab before the overflow tab is then closed and pushed
+into the overflow tab as a link, like so:
+
+![Second Walkthrough Image](images/walkthrough_second.png)
 
 ## Features
 
