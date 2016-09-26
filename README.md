@@ -28,6 +28,12 @@ into the overflow tab as a link, like so:
 
 ![Second Walkthrough Image](images/walkthrough_second.png)
 
+The user has finished reading all that they need in Quora and decide to kill the
+tab.  This will ask the overflow tab to spit out the latest thing fed into it,
+in this case Stack Overflow.  The window now looks like this:
+
+![Third Walkthrough Image](images/walkthrough_third.png)
+
 ## Features
 
 ### Sorting
