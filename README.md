@@ -18,7 +18,7 @@ the overflow tab is no longer needed, it will politely close itself.
 By default, overflow links are grouped by
 their site (All Reddit tabs will appear next to each other, and similarly for
 Wikipedia, Stack Overflow, Youtube, or any other site), but the user may also
-organize them by tab title, or chronology.  Any of these sorting rules can be freely
+organize them by tab title or chronology.  Any of these sorting rules can be freely
 reversed.
 
 ### Safe Tabs
@@ -26,7 +26,7 @@ reversed.
 Initially, the left three tabs will
 never be archived, and so the user will move any tabs they wish to keep into those
 spots.  If the user wants to save more (or less!) tabs, the number of safe tabs
-can be adjusted as well.
+can be adjusted through a drop down in the overflow tab.
 
 ### Quick Closing
 
@@ -63,3 +63,10 @@ in one of the safe tab slots.
 Repeatedly turning the extension on and off within the same browser session can
 cause the user to lose some tabs.  As there is rarely a reason to do this, we
 advise avoiding doing so until the bug can be found.
+
+
+## Feedback
+
+Feedback is greatly appreciated.  If you encounter any bugs or feel that the
+project may benefit from a different design or feature, please feel free to
+contact the authors at **emails**, or create an **issue**.
