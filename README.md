@@ -21,6 +21,8 @@ Wikipedia, Stack Overflow, Youtube, or any other site), but the user may also
 organize them by tab title or chronology.  Any of these sorting rules can be freely
 reversed.
 
+![Image of Sorted]('images/sorting.png')
+
 ### Safe Tabs
 
 Initially, the left three tabs will
@@ -68,5 +70,5 @@ advise avoiding doing so until the bug can be found.
 ## Feedback
 
 Feedback is greatly appreciated.  If you encounter any bugs or feel that the
-project may benefit from a different design or feature, please feel free to
+project could use a different design or new feature, please feel free to
 contact the authors at **emails**, or create an **issue**.
