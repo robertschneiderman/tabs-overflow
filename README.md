@@ -21,7 +21,7 @@ Wikipedia, Stack Overflow, Youtube, or any other site), but the user may also
 organize them by tab title or chronology.  Any of these sorting rules can be freely
 reversed.
 
-![Image of Sorted]('/images/sorting.png')
+![Image of Sorted](images/sorting.png)
 
 ### Safe Tabs
 
