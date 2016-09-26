@@ -130,7 +130,9 @@ const customArmageddon = (tabList) => {
   newNode.sort(ruleList[selectedRule])
   tabList.innerHTML = ""
   newNode.forEach((el) => {
-    tabList.appendChild(el)
+    tabList.appendChild(el);
+    let br = document.createElement('br');
+    tabList.appendChild(br);
   })
 }
 
