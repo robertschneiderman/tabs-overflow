@@ -24,12 +24,15 @@ let storedActive = chrome.storage.sync.get('activeStatus', (data) => {
   }
 })
 
+let move = true;
+
 const createdListen = (tab) => {
-  if (overflowId > 0) {
+  if (overflowId > 0 && move) {
     chrome.tabs.move(tab.id, {index: numSafeTabs})
   }
   getAllTabs((tabs) => updateOverflowTab(tabs, tab))
   moveOverflowRight();
+  move = true;
 }
 
 const getAllTabs = (call) => {
@@ -90,7 +93,11 @@ const messageListen = (message, sender) => {
       chrome.tabs.update(message.tabId, {active: true});
       break;
     case "OPEN_TAB":
-      chrome.tabs.create({url: message.url, index: numSafeTabs, active: false});
+      console.log(message.idx);
+      if (message.idx) {
+        move = false;
+      }
+      chrome.tabs.create({url: message.url, active: false});
       break;
     case "DESTROY_OVERFLOW":
       chrome.tabs.remove(overflowId);

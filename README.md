@@ -15,7 +15,7 @@ the overflow tab is no longer needed, it will politely close itself.
 
 ### Walkthrough
 
-Our hapless user has too many tabs open!  With three safe tabs, 5 unsafe tabs,
+Our user has too many tabs open!  With three safe tabs, 5 cycling tabs,
 and one overflow tab, his browser window looks like this:
 
 ![First Walkthrough Image](images/walkthrough_first.png)
@@ -33,6 +33,13 @@ tab.  This will ask the overflow tab to spit out the latest thing fed into it,
 in this case Stack Overflow.  The window now looks like this:
 
 ![Third Walkthrough Image](images/walkthrough_third.png)
+
+Overall, as more tabs are opened, the cycle tabs are pushed to the right, with
+the right-most one being collected into the overflow tab.  As tabs are closed,
+tabs are pulled to the left, with a tab emerging from the overflow tab to fill
+the gap.  In this way, tabs furthest to the left are usually newer, more important,
+and furthest from being garbage collected, while the right tabs are older and
+more prone to being archived.
 
 ## Features
 

@@ -162,7 +162,7 @@ chrome.runtime.onMessage.addListener((message) => {
       let selId = nodeList.pop().getAttribute('data-id')
       let selItem = document.querySelector(`[data-id="${selId}"]`)
       let url = selItem.getAttribute('data-url');
-      chrome.runtime.sendMessage({type: "OPEN_TAB", url: url});
+      chrome.runtime.sendMessage({type: "OPEN_TAB", url: url, idx: 7});
       selItem.remove();
       document.querySelector('.header-tab-count').innerHTML = `Total: ${8 + nodeList.length} Tabs`
       if (nodeList.length === 0) {
