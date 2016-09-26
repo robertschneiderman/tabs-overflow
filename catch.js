@@ -38,6 +38,16 @@ let selectedRule = 0;
 chrome.storage.sync.get('selectedRule', (data) => {
   if (Object.keys(data).length > 0) {
     selectedRule = data.selectedRule;
+    if (selectedRule === 0 || selectedRule === 3){
+      document.getElementById('sort-value').innerHTML = 'Site'
+    } else if (selectedRule === 1 || selectedRule === 4){
+      document.getElementById('sort-value').innerHTML = 'Queue'
+    } else {
+      document.getElementById('sort-value').innerHTML = 'Title'
+    }
+    if (selectedRule > 2) {
+      document.getElementById('sort-checkbox').checked = true;
+    }
   }
 })
 
