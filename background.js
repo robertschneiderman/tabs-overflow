@@ -16,7 +16,7 @@ let storedActive = chrome.storage.sync.get('activeStatus', (data) => {
     if (active) {
       listenOn();
     } else {
-      chrome.browserAction.setIcon({path: "icon-grey.png"});
+      chrome.browserAction.setIcon({path: "icons/icon-grey.png"});
     }
   } else {
     active = true;
@@ -174,14 +174,14 @@ chrome.browserAction.onClicked.addListener( () => {
     chrome.tabs.onMoved.removeListener(moveOverflowRight);
     chrome.tabs.onAttached.removeListener(moveOverflowRight);
     chrome.runtime.onMessage.addListener(closeListen);
-    chrome.browserAction.setIcon({path: "icon-grey.png"});
+    chrome.browserAction.setIcon({path: "icons/icon-grey.png"});
     chrome.tabs.sendMessage(overflowId, {type: 'UNPACK'});
   } else {
     chrome.storage.sync.set({activeStatus: true})
     chrome.runtime.onMessage.removeListener(closeListen);
     listenOn();
     pack();
-    chrome.browserAction.setIcon({path: "icon.png"});
+    chrome.browserAction.setIcon({path: "icons/icon.png"});
   }
   active = !active
 })
