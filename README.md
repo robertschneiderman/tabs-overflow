@@ -1,53 +1,65 @@
-## TabsOverfow
+# Tabs Overflow
 
-### Background
 
-Google Chrome has become the most popular web browser, surpassing Mozilla Firefox. Chrome is not devoid of its flaws, however. Many people have a hard time working in Chrome, due to Chrome's limited customizability around a user's needs. Enter TabsOverflow...
+## Summary
 
-TabsOverflow is a Chrome extension that allows users to manage their tabs in an efficient and elegant manner. Users can have their tabs grouped in such a way that they won't run into the problem of having too many tabs open at the same time. TabsOverflow will also provide hotkeys that allow for efficient navigation inside of Chrome.  
+Tabs Overflow is a chrome extension which aims to make navigating with many tabs
+open easier and quicker.  It does this by allowing the user to have 8 tabs open
+at a time and selectively archiving any more than that into an 'overflow tab'
+which holds links to the archived tabs.  Clicking on these links will open them,
+archiving the next tab in line to make room.  Similarly, closing any tab will
+pop open the last tab that was archived.  When enough tabs have been closed that
+the overflow tab is no longer needed, it will politely close itself.
 
-### Wireframes
+## Features
 
-![wireframes](/images/panels_wireframe.png)
+### Sorting
 
-### Functionality & MVP
+By default, overflow links are grouped by
+their site (All Reddit tabs will appear next to each other, and similarly for
+Wikipedia, Stack Overflow, Youtube, or any other site), but the user may also
+organize them by tab title, or chronology.  Any of these sorting rules can be freely
+reversed.
 
-This chrome extension will:
+### Safe Tabs
 
-- [ ] Always show the user the first thirty characters of the name of each tab that they have open,
-- [ ] Display the numbering of each tab for easier ctrl+n navigation,
-- [ ] Allow quicker navigation among tabs using hotkeys
+Initially, the left three tabs will
+never be archived, and so the user will move any tabs they wish to keep into those
+spots.  If the user wants to save more (or less!) tabs, the number of safe tabs
+can be adjusted as well.
 
-### Implementation Timeline
+### Quick Closing
 
-**Day 1**: Get started on the infrastructure of the extension, following <a href="https://developer.chrome.com/extensions/getstarted">this guide</a> from Chrome.  By the end of the day, I will have:
+Tabs may be removed from the overflow tab by clicking on an 'x' next to their
+link if the user knows that they no longer need that link.  This will ensure that
+the link is not automatically opened on another tabs closure.  If the user is sure
+that they no longer need any of the links on the overflow tab, they can simply
+close the tab to forget all of its contents.
 
-- A completed `package.json`
-- A completed `manifest.json`
-- The ability to display a sidebar with the names of open tabs.
+###  Easier Hotkey Navigation
 
-**Day 2**:  Build out core functionality.
+Having at most 9 tabs open (including the overflow) ensures that the user can
+navigate to any tab with ctrl (or cmd) + num.  In addition, knowing that there
+are exactly 9 tabs open lets the user easily identify tab number 8, for example.
 
-- Allow users to navigate using the sidebar using either the mouse or keystrokes
-- Get the basic styling done
+## Known Issues
 
-**Day 3**: Tighten everything done by day 2
+### Multiple Windows
 
-- Fine tune the styling.
-- Fix any issues that may have arisen during the first two days of work.
-- Lay out plans for tackling the bonus, or fixing anything that may yet be deeply broken.
+Tabs Overflow has been designed with the assumption that the user will have only
+one chrome window open at a time, and several strange and unintuitive interactions
+occur when there are multiple windows open.  This will be addressed in a future
+release.  For now, simply turn off the extension if you plan to open several windows.
 
-**Day 4**:  Implement tab grouping features.
+### Archiving the Active Tab
 
-- Group/nest similar tabs.
-- Allow users to split off tab groupings into separate windows if they like.
+It is currently possible for the extension to snatch the active tab and shove it
+in the overflow tab if the active tab is in the 8th position.  To ensure that this
+never happens, the user can keep a tab from which they expect to open many new tabs
+in one of the safe tab slots.
 
-### Technologies & Technical Challenges
+### Repeated On/off
 
-The technologies that will be used for this project are very familiar to the developers beforehand. We will be using HTML 5, CSS3, and Javascript in order to build this Chrome Extension. This is considered to be the basic workflow for building out a Chrome extension.
-
-There will definitely be a lot of planning around how the Chrome extension communicates with the browser. We are going to need to decide what browser and page actions the Chrome extension is going to have. This is one of the most pivotal parts of any Chrome extension.
-
-We will also have to decide if this will be a background or event based page. Given that the Chrome docs have recommended that for performance reasons it is better to create an event page, we will probably stick to this plan. We do acknowledge, however, that we may have some time constraints during this project, so we may have to use the background page in order to reach our minimal viable product.
-
-Lastly, we need to decide what messages our Chrome extension will listen for on the users page. This will mean that we have to look into what Javascript event may occur, and what the Google Chrome Extensions API does in response to them.
+Repeatedly turning the extension on and off within the same browser session can
+cause the user to lose some tabs.  As there is rarely a reason to do this, we
+advise avoiding doing so until the bug can be found.
