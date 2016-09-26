@@ -100,6 +100,8 @@ const createCloseBtn = (listItem, tab) => {
     e.preventDefault();
     e.stopPropagation();
     nodeList = nodeList.filter(el => (el.getAttribute('data-id') !== `${tab.id}`) )
+    document.querySelector('.header-tab-count').innerHTML = `Total: ${8 + nodeList.length} Tabs`
+    listItem.nextSibling.remove();
     listItem.remove();
   });
   return closeBtn;
