@@ -1,5 +1,9 @@
 # Tabs Overflow
 
+[Store][spill-tab]
+
+[spill-tab]: https://chrome.google.com/webstore/detail/spill-tab/deangolalcdkjhlhiipidbjkofoaemdn
+
 
 ## Summary
 
@@ -101,4 +105,6 @@ advise avoiding doing so until the bug can be found.
 
 Feedback is greatly appreciated.  If you encounter any bugs or feel that the
 project could use a different design or new feature, please feel free to
-contact the authors at **emails**, or create an **issue**.
+contact the authors at **emails**, or create an [issue][issue].
+
+[issue]: https://github.com/robertschneiderman/tab-overflow/issues/new
