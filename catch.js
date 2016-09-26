@@ -76,6 +76,12 @@ const handleSafeTabs = (num) => {
   })
 }
 
+chrome.storage.sync.get('safeTabs', (data) => {
+  if (Object.keys(data).length > 0) {
+    document.querySelector('.option-value').innerHTML = data.safeTabs;
+  }
+})
+
 const createCloseBtn = (listItem, tab) => {
   let closeBtn = document.createElement('span');
   closeBtn.classList.add('overflow-item-close-btn');
@@ -136,6 +142,7 @@ chrome.runtime.onMessage.addListener((message) => {
         let listItem = createListItem(message.tab);
         nodeList.push(listItem);
         customArmageddon(tabList);
+        document.querySelector('.header-tab-count').innerHTML = `Total: ${8 + nodeList.length} Tabs`
       }
       return true;
       break;
@@ -145,6 +152,7 @@ chrome.runtime.onMessage.addListener((message) => {
       let url = selItem.getAttribute('data-url');
       chrome.runtime.sendMessage({type: "OPEN_TAB", url: url});
       selItem.remove();
+      document.querySelector('.header-tab-count').innerHTML = `Total: ${8 + nodeList.length} Tabs`
       if (nodeList.length === 0) {
         chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
       }
@@ -196,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     numOptions[i].addEventListener('click', () => {
       idStr = numOptions[i].getAttribute('id');
       id = parseInt(idStr[idStr.length - 1],10)
+      document.querySelector('.option-value').innerHTML = id;
       handleSafeTabs(id)
     })
   }

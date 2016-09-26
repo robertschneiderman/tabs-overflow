@@ -6,7 +6,6 @@ let numSafeTabs = 3;
 
 chrome.storage.sync.get('safeTabs', (data) => {
   if (Object.keys(data).length > 0) {
-    console.log(data);
     numSafeTabs = data.safeTabs
   }
 })
