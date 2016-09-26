@@ -59,9 +59,9 @@
 
 .overflow-header {/* border-bottom: 1px dashed #d8d8d8; */display: flex;justify-content: space-between;margin-bottom: 1rem;}
 
-.overflow-list {list-style: none;}
+.overflow-list {list-style: none;/* display: flex; *//* flex-direction: column; */}
 
-.overflow-item {cursor: pointer;margin-bottom: 0.3rem;padding-left: 1rem;left: -1rem;}
+.overflow-item {cursor: pointer;margin-bottom: 0.3rem;padding-left: 1rem;left: -1rem;display: inline-block;}
 /*.overflow-item:hover::before {
 
 }*/
