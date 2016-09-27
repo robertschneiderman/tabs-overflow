@@ -69,22 +69,24 @@ const updateOverflowTab = (tabs, tab) => {
 
   let activeIndex = 0;
 
-  chrome.tabs.query({active: true}, (tabs) => activeIndex = tabs[0].index)
+  chrome.tabs.query({active: true}, (babs) => {
+    activeIndex = babs[0].index
+    if (tabs.length > 9) {
+      let doomedTab;
+      if (activeIndex === 7) {
+        doomedTab = tabs[7];
+      } else {
+        doomedTab = tabs[8];
+      }
 
-  if (tabs.length > 9) {
-    let doomedTab;
-    if (activeIndex === 7) {
-      doomedTab = tabs[7];
-    } else {
-      doomedTab = tabs[8];
+      if (activeIndex === 8) {
+        doomedTab = tabs[7];
+      }
+      console.log([doomedTab.index, activeIndex]);
+      chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab});
+      chrome.tabs.remove(doomedTab.id);
     }
-
-    if (activeIndex === 8) {
-      doomedTab = tabs[7];
-    }
-    chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab});
-    chrome.tabs.remove(doomedTab.id);
-  }
+  })
 };
 
 const messageListen = (message, sender) => {
