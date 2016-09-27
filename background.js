@@ -56,12 +56,24 @@ const removedListen = (tab, info) => {
 }
 
 const detachedListen = (tabId, info) => {
-  if (tabId === overflowId) {
-    chrome.tabs.sendMessage(overflowId, {type: "UNPACK"})
-  } else {
+  if (tabId !== overflowId) {
     let dummy = {};
     dummy.windowId = info.oldWindowId
     removedListen(tabId, dummy)
+  }
+}
+
+const attachedListen = (tabId, info) => {
+  console.log('hi');
+  if (info.newWindowId === overflowWindow) {
+    let dummy = {};
+    dummy.id = tabId
+    createdListen(dummy)
+  }
+
+  if (tabId === overflowId) {
+    overflowWindow = info.newWIndowId
+    chrome.tabs.sendMessage(overflowId, {type: "UNPACK"})
   }
 }
 
@@ -97,7 +109,6 @@ const updateOverflowTab = (tabs, tab) => {
       if (activeIndex === 8) {
         doomedTab = tabs[7];
       }
-      console.log([doomedTab.index, activeIndex]);
       chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab});
       chrome.tabs.remove(doomedTab.id);
     }
@@ -110,7 +121,6 @@ const messageListen = (message, sender) => {
       chrome.tabs.update(message.tabId, {active: true});
       break;
     case "OPEN_TAB":
-      console.log(message.idx);
       if (message.idx) {
         move = false;
       }
@@ -182,6 +192,7 @@ const listenOn = () => {
   chrome.tabs.onAttached.addListener(moveOverflowRight);
   chrome.tabs.onCreated.addListener(createdListen);
   chrome.tabs.onDetached.addListener(detachedListen);
+  chrome.tabs.onAttached.addListener(attachedListen);
 }
 
 const closeListen = (message, sender) => {
@@ -203,7 +214,8 @@ chrome.browserAction.onClicked.addListener( () => {
     chrome.tabs.onRemoved.removeListener(removedListen);
     chrome.tabs.onMoved.removeListener(moveOverflowRight);
     chrome.tabs.onAttached.removeListener(moveOverflowRight);
-    chrome.tabs.onDetached.removeListener(detachedListen)
+    chrome.tabs.onDetached.removeListener(detachedListen);
+    chrome.tabs.onAttached.removeListener(attachedListen);
     chrome.runtime.onMessage.addListener(closeListen);
     chrome.browserAction.setIcon({path: "icons/icon-grey.png"});
     chrome.tabs.sendMessage(overflowId, {type: 'UNPACK'});
