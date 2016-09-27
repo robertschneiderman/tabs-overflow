@@ -51,6 +51,14 @@ const removedListen = (tab) => {
   });
 }
 
+const detachedListen = (tabId) => {
+  if (tabId = overflowId) {
+    chrome.tabs.sendMessage(overflowId, {type: "UNPACK"})
+  } else {
+    removedListen(tabId)
+  }
+}
+
 const moveOverflowRight = () => {
   if (overflowId > 0) {
     chrome.tabs.move(overflowId, {index: 9});
@@ -109,6 +117,12 @@ const messageListen = (message, sender) => {
       chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
       purgatoryHandled = true;
       break;
+    case "UNPACK_TABS":
+      message.urlList.forEach((url) => {
+        chrome.tabs.create({url: url, active: false})
+      })
+      chrome.tabs.remove(overflowId)
+      break;
     // case "SHOW_NUMBERS":
     //   getAllTabs(tabs => {
     //     tabs.forEach(tab => {
@@ -156,6 +170,7 @@ const listenOn = () => {
   chrome.tabs.onMoved.addListener(moveOverflowRight);
   chrome.tabs.onAttached.addListener(moveOverflowRight);
   chrome.tabs.onCreated.addListener(createdListen);
+  chrome.tabs.onDetached.addListener(detachedListen);
 }
 
 const closeListen = (message, sender) => {
@@ -175,6 +190,7 @@ chrome.browserAction.onClicked.addListener( () => {
     chrome.tabs.onRemoved.removeListener(removedListen);
     chrome.tabs.onMoved.removeListener(moveOverflowRight);
     chrome.tabs.onAttached.removeListener(moveOverflowRight);
+    chrome.tabs.onDetached.removeListener(detachedListen)
     chrome.runtime.onMessage.addListener(closeListen);
     chrome.browserAction.setIcon({path: "icons/icon-grey.png"});
     chrome.tabs.sendMessage(overflowId, {type: 'UNPACK'});
