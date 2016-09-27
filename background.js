@@ -40,24 +40,28 @@ const getAllTabs = (call) => {
   chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, call)
 };
 
-const removedListen = (tab) => {
-  if (tab === overflowId) {
-    overflowId = 0;
-    overflowWindow = 0;
-  }
-  getAllTabs((tabs) => {
-    updateOverflowTab(tabs, tab);
-    if (overflowId > 0 && tabs.length < 9) {
-      chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB"})
+const removedListen = (tab, info) => {
+  if (info.windowId === overflowWindow) {
+    if (tab === overflowId) {
+      overflowId = 0;
+      overflowWindow = 0;
     }
-  });
+    getAllTabs((tabs) => {
+      updateOverflowTab(tabs, tab);
+      if (overflowId > 0 && tabs.length < 9) {
+        chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB"})
+      }
+    });
+  }
 }
 
-const detachedListen = (tabId) => {
+const detachedListen = (tabId, info) => {
   if (tabId === overflowId) {
     chrome.tabs.sendMessage(overflowId, {type: "UNPACK"})
   } else {
-    removedListen(tabId)
+    let dummy = {};
+    dummy.windowId = info.oldWindowId
+    removedListen(tabId, dummy)
   }
 }
 
