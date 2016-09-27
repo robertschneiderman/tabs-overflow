@@ -1,4 +1,5 @@
 let overflowId = 0;
+let overflowWindow = 0;
 let purgatoryTab;
 let purgatoryHandled = false;
 let active = true;
@@ -42,6 +43,7 @@ const getAllTabs = (call) => {
 const removedListen = (tab) => {
   if (tab === overflowId) {
     overflowId = 0;
+    overflowWindow = 0;
   }
   getAllTabs((tabs) => {
     updateOverflowTab(tabs, tab);
@@ -52,7 +54,7 @@ const removedListen = (tab) => {
 }
 
 const detachedListen = (tabId) => {
-  if (tabId = overflowId) {
+  if (tabId === overflowId) {
     chrome.tabs.sendMessage(overflowId, {type: "UNPACK"})
   } else {
     removedListen(tabId)
@@ -71,6 +73,7 @@ const updateOverflowTab = (tabs, tab) => {
     chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false},
     (tab) => {
       overflowId = tab.id;
+      overflowWindow = tab.windowId;
       purgatoryTab = tabs[7];
     })
   }
@@ -107,11 +110,12 @@ const messageListen = (message, sender) => {
       if (message.idx) {
         move = false;
       }
-      chrome.tabs.create({url: message.url, active: false});
+      chrome.tabs.create({url: message.url, active: false, windowId: overflowWindow});
       break;
     case "DESTROY_OVERFLOW":
       chrome.tabs.remove(overflowId);
       overflowId = 0;
+      overflowWindow = 0;
       break;
     case "REQUEST_PURGATORY":
       chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
@@ -119,9 +123,11 @@ const messageListen = (message, sender) => {
       break;
     case "UNPACK_TABS":
       message.urlList.forEach((url) => {
-        chrome.tabs.create({url: url, active: false})
+        chrome.tabs.create({url: url, active: false, windowId: overflowWindow})
       })
       chrome.tabs.remove(overflowId)
+      overflowId = 0;
+      overflowWindow = 0;
       break;
     // case "SHOW_NUMBERS":
     //   getAllTabs(tabs => {
@@ -151,6 +157,7 @@ const pack = () => {
       chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false, index: 8},
       (tab) => {
         overflowId = tab.id;
+        overflowWindow = tab.windowId
         setTimeout(() => {
           tabs.forEach((tab) => {
             if (tab.index > 8) {
@@ -179,6 +186,8 @@ const closeListen = (message, sender) => {
       chrome.tabs.create({url: url, active: false})
     })
     chrome.tabs.remove(overflowId)
+    overflowId = 0;
+    overflowWindow = 0;
   }
 }
 
