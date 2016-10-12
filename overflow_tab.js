@@ -101,6 +101,7 @@ const createCloseBtn = (listItem, tab) => {
     e.stopPropagation();
     nodeList = nodeList.filter(el => (el.getAttribute('data-id') !== `${tab.id}`) )
     document.querySelector('.header-tab-count').innerHTML = `Total: ${8 + nodeList.length} Tabs`
+    document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
     listItem.nextSibling.remove();
     listItem.remove();
   });
@@ -157,6 +158,7 @@ chrome.runtime.onMessage.addListener((message) => {
         nodeList.push(listItem);
         customArmageddon(tabList);
         document.querySelector('.header-tab-count').innerHTML = `Total: ${8 + nodeList.length} Tabs`
+        document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;        
       }
       return true;
       break;
@@ -167,6 +169,7 @@ chrome.runtime.onMessage.addListener((message) => {
       chrome.runtime.sendMessage({type: "OPEN_TAB", url: url, idx: 7});
       selItem.remove();
       document.querySelector('.header-tab-count').innerHTML = `Total: ${8 + nodeList.length} Tabs`
+      document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;      
       if (nodeList.length === 0) {
         chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
       }
