@@ -1,13 +1,16 @@
 {
   "manifest_version": 2,
 
-  "name": "spill-tab",
+  "name": "Tabs Overflow",
   "description": "This is an extension for managing navigation with a large number by 'overflowing' excess tabs into an index tab.",
   "version": "1.0",
   "background": {
     "pesistent": "false",
     "scripts": ["background.js"]
   },
+  "icons": { "16": "images/icon16.png",
+           "48": "images/icon48.png",
+          "128": "images/icon128.png" },  
   "browser_action": {
     "default_icon": "icons/icon.png"
   },
