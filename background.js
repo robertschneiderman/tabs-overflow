@@ -152,7 +152,7 @@ const messageListen = (message, sender) => {
       break;
     case "REQUEST_PURGATORY":
       chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab,
-    permittedTab: permittedTabNum()}});
+    permittedTab: permittedTabNum()});
       purgatoryHandled = true;
       break;
     case "UNPACK_TABS":
@@ -196,7 +196,7 @@ const pack = () => {
           tabs.forEach((tab) => {
             if (tab.index > (permittedTabNum())) {
               chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: tab,
-            permittedTab: permittedTabNum()}})
+            permittedTab: permittedTabNum()})
               chrome.tabs.remove(tab.id)
             }
           })

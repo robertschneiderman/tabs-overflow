@@ -160,7 +160,7 @@ chrome.runtime.onMessage.addListener((message) => {
         nodeList.push(listItem);
         customArmageddon(tabList);
         document.querySelector('.header-tab-count').innerHTML =
-         `Total: ${message.permittedTabNum + nodeList.length} Tabs`
+         `Total: ${message.permittedTab + nodeList.length} Tabs`
         document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
       }
       return true;
