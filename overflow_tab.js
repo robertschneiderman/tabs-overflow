@@ -1,7 +1,3 @@
-let penultimateTabNum() = 11;
-let permittedTabNum() = 12;
-let doomedTabNum() = 13;
-
 let nodeList = [];
 
 const favCompare = (a, b) => {
@@ -104,7 +100,9 @@ const createCloseBtn = (listItem, tab) => {
     e.preventDefault();
     e.stopPropagation();
     nodeList = nodeList.filter(el => (el.getAttribute('data-id') !== `${tab.id}`) )
-    document.querySelector('.header-tab-count').innerHTML = `Total: ${permittedTabNum() + nodeList.length} Tabs`
+    tabCount = document.querySelector('.header-tab-count')
+    newCount = tabCount.innerHTML.slice(7) - 1
+    tabCount.innerHTML = `Total: ${newCount}`
     document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
     listItem.nextSibling.remove();
     listItem.remove();
@@ -161,7 +159,8 @@ chrome.runtime.onMessage.addListener((message) => {
         let listItem = createListItem(message.tab);
         nodeList.push(listItem);
         customArmageddon(tabList);
-        document.querySelector('.header-tab-count').innerHTML = `Total: ${permittedTabNum() + nodeList.length} Tabs`
+        document.querySelector('.header-tab-count').innerHTML =
+         `Total: ${message.permittedTabNum + nodeList.length} Tabs`
         document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
       }
       return true;
@@ -170,9 +169,9 @@ chrome.runtime.onMessage.addListener((message) => {
       let selId = nodeList.pop().getAttribute('data-id')
       let selItem = document.querySelector(`[data-id="${selId}"]`)
       let url = selItem.getAttribute('data-url');
-      chrome.runtime.sendMessage({type: "OPEN_TAB", url: url, idx: penultimateTabNum()});
+      chrome.runtime.sendMessage({type: "OPEN_TAB", url: url, idx: message.pen});
       selItem.remove();
-      document.querySelector('.header-tab-count').innerHTML = `Total: ${permittedTabNum() + nodeList.length} Tabs`
+      document.querySelector('.header-tab-count').innerHTML = `Total: ${message.perm + nodeList.length} Tabs`
       document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
       if (nodeList.length === 0) {
         chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})

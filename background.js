@@ -23,6 +23,12 @@ chrome.storage.sync.get('safeTabs', (data) => {
   }
 })
 
+chrome.storage.sync.get('numTabs', (data) => {
+  if (Object.keys(data).length > 0) {
+    numTabs = data.numTabs
+  }
+})
+
 let storedActive = chrome.storage.sync.get('activeStatus', (data) => {
   if (Object.keys(data).length > 0) {
     active = data.activeStatus;
@@ -61,7 +67,8 @@ const removedListen = (tab, info) => {
     getAllTabs((tabs) => {
       updateOverflowTab(tabs, tab);
       if (overflowId > 0 && tabs.length < doomedTabNum()) {
-        chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB"})
+        chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB", perm: permittedTabNum(),
+      pen: penultimateTabNum()})
       }
     });
   }
@@ -120,7 +127,8 @@ const updateOverflowTab = (tabs, tab) => {
       if (activeIndex === (permittedTabNum())) {
         doomedTab = tabs[penultimateTabNum()];
       }
-      chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab});
+      chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab,
+    permittedTab: permittedTabNum()});
       chrome.tabs.remove(doomedTab.id);
     }
   })
@@ -143,7 +151,8 @@ const messageListen = (message, sender) => {
       overflowWindow = 0;
       break;
     case "REQUEST_PURGATORY":
-      chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab});
+      chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: purgatoryTab,
+    permittedTab: permittedTabNum()}});
       purgatoryHandled = true;
       break;
     case "UNPACK_TABS":
@@ -186,7 +195,8 @@ const pack = () => {
         setTimeout(() => {
           tabs.forEach((tab) => {
             if (tab.index > (permittedTabNum())) {
-              chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: tab})
+              chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: tab,
+            permittedTab: permittedTabNum()}})
               chrome.tabs.remove(tab.id)
             }
           })
