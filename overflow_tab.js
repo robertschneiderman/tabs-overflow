@@ -224,8 +224,18 @@ document.addEventListener("DOMContentLoaded", () => {
     numOptions[i].addEventListener('click', () => {
       idStr = numOptions[i].getAttribute('id');
       id = parseInt(idStr[idStr.length - 1],10)
-      document.querySelector('.option-value').innerHTML = id;
+      document.getElementById('safe-tabs').innerHTML = id;
       handleSafeTabs(id)
+    })
+  }
+
+  let tabOptions = document.querySelectorAll('.numb');
+
+  for (let i = 0; i < tabOptions.length; i++) {
+    tabOptions[i].addEventListener('click', () => {
+      id = tabOptions[i].getAttribute('id').slice(8);
+      document.getElementById('num-tabs').innerHTML = id;
+      // handleSafeTabs(id)
     })
   }
 });
