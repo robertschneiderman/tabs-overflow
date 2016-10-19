@@ -86,6 +86,12 @@ const handleSafeTabs = (num) => {
   })
 }
 
+const handleNumTabs = (num) => {
+  chrome.storage.sync.set({numTabs: num}, () => {
+    chrome.runtime.sendMessage({type: "NUM_TABS", num: num})
+  })
+}
+
 chrome.storage.sync.get('safeTabs', (data) => {
   if (Object.keys(data).length > 0) {
     document.querySelector('.option-value').innerHTML = data.safeTabs;
@@ -222,10 +228,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   for (let i = 0; i < numOptions.length; i++) {
     numOptions[i].addEventListener('click', () => {
-      idStr = numOptions[i].getAttribute('id');
-      id = parseInt(idStr[idStr.length - 1],10)
+      id = numOptions[i].getAttribute('id').slice(4)
       document.getElementById('safe-tabs').innerHTML = id;
-      handleSafeTabs(id)
+      handleSafeTabs(parseInt(id))
     })
   }
 
@@ -235,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tabOptions[i].addEventListener('click', () => {
       id = tabOptions[i].getAttribute('id').slice(8);
       document.getElementById('num-tabs').innerHTML = id;
-      // handleSafeTabs(id)
+      handleNumTabs(parseInt(id))
     })
   }
 });

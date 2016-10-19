@@ -180,6 +180,9 @@ const messageListen = (message, sender) => {
     case "NUM_SAFE_TABS":
       numSafeTabs = message.num;
       break;
+    case "NUM_TABS":
+      numTabs = message.num;
+      break;
     default:
       return true;
   }
