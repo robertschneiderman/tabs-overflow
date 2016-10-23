@@ -1,5 +1,11 @@
 let nodeList = [];
 
+// Sorting rules
+
+const reverseSort = (callback) => {
+  return (a, b) => (callback(b, a))
+}
+
 const favCompare = (a, b) => {
   aFav = a.children[1].getAttribute('src')
   bFav = b.children[1].getAttribute('src')
@@ -9,10 +15,6 @@ const favCompare = (a, b) => {
   } else {
     return 1
   }
-}
-
-const reverseSort = (callback) => {
-  return (a, b) => (callback(b, a))
 }
 
 const stackCompare = (a,b) => {
@@ -34,6 +36,8 @@ const alphabetCompare = (a,b) => {
 const ruleList = [favCompare, stackCompare, alphabetCompare,
   reverseSort(favCompare), reverseSort(stackCompare), reverseSort(alphabetCompare)];
 
+// Sorting Interface
+
 let selectedRule = 0;
 chrome.storage.sync.get('selectedRule', (data) => {
   if (Object.keys(data).length > 0) {
@@ -50,16 +54,6 @@ chrome.storage.sync.get('selectedRule', (data) => {
     }
   }
 })
-
-let alreadyCreated = (tabList, message) => {
-  for (let i = 0; i < tabList.children.length; i++) {
-    let childId = tabList.children[i].getAttribute('data-id')
-    if (childId == message.tab.id) {
-      return true;
-    }
-  }
-  return false;
-}
 
 const handleReverse = () => {
   selectedRule = (selectedRule + 3) % 6;
@@ -80,15 +74,30 @@ const handleRuleChange = (num) => {
   customArmageddon(tabList);
 }
 
-const handleSafeTabs = (num) => {
-  chrome.storage.sync.set({safeTabs: num}, () => {
-    chrome.runtime.sendMessage({type: "NUM_SAFE_TABS", num: num})
-  })
+
+
+
+let alreadyCreated = (tabList, message) => {
+  for (let i = 0; i < tabList.children.length; i++) {
+    let childId = tabList.children[i].getAttribute('data-id')
+    if (childId == message.tab.id) {
+      return true;
+    }
+  }
+  return false;
 }
+
+
 
 const handleNumTabs = (num) => {
   chrome.storage.sync.set({numTabs: num}, () => {
     chrome.runtime.sendMessage({type: "NUM_TABS", num: num})
+  })
+}
+
+const handleSafeTabs = (num) => {
+  chrome.storage.sync.set({safeTabs: num}, () => {
+    chrome.runtime.sendMessage({type: "NUM_SAFE_TABS", num: num})
   })
 }
 
@@ -97,6 +106,8 @@ chrome.storage.sync.get('safeTabs', (data) => {
     document.querySelector('.option-value').innerHTML = data.safeTabs;
   }
 })
+
+// List item creation
 
 const createCloseBtn = (listItem, tab) => {
   let closeBtn = document.createElement('span');

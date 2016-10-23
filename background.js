@@ -1,3 +1,5 @@
+// Setting initial variables
+
 let overflowId = 0;
 let overflowWindow = 0;
 let purgatoryTab;
@@ -16,6 +18,7 @@ const doomedTabNum = () => {
   return numTabs
 }
 
+// Fetching saved values
 
 chrome.storage.sync.get('safeTabs', (data) => {
   if (Object.keys(data).length > 0) {
@@ -43,7 +46,63 @@ let storedActive = chrome.storage.sync.get('activeStatus', (data) => {
   }
 })
 
+// Helpers
+
 let move = true;
+
+const getAllTabs = (call) => {
+  chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, call)
+};
+
+const moveOverflowRight = () => {
+  if (overflowId > 0) {
+    chrome.tabs.move(overflowId, {index: doomedTabNum()});
+  }
+};
+
+const sendExtra = (tabs) => {
+  tabs.forEach((tab) => {
+    if (tab.index > (permittedTabNum())) {
+      chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: tab,
+    permittedTab: permittedTabNum()})
+      chrome.tabs.remove(tab.id)
+    }
+  })
+}, 1000)
+}
+
+const createOverflow = () => {
+  chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false},
+  (tab) => {
+    overflowId = tab.id;
+    overflowWindow = tab.windowId;
+    purgatoryTab = tabs[penultimateTabNum()];
+  })
+}
+
+const updateOverflowTab = (tabs, tab) => {
+
+  if (tabs.length > (permittedTabNum()) && overflowId === 0) createOverflow();
+  let activeIndex;
+
+  chrome.tabs.query({active: true}, (babs) => {
+    activeIndex = babs[0].index;
+    if (tabs.length > doomedTabNum()) {
+      let doomedTab;
+      if (activeIndex === penultimateTabNum() || activeIndex === permittedTabNum()) {
+        doomedTab = tabs[penultimateTabNum()];
+      } else {
+        doomedTab = tabs[permittedTabNum()];
+      }
+
+      chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab,
+    permittedTab: permittedTabNum()});
+      chrome.tabs.remove(doomedTab.id);
+    }
+  })
+};
+
+// Listeners
 
 const createdListen = (tab) => {
   if (overflowId > 0 && move) {
@@ -53,10 +112,6 @@ const createdListen = (tab) => {
   moveOverflowRight();
   move = true;
 }
-
-const getAllTabs = (call) => {
-  chrome.tabs.query({windowId: chrome.windows.WINDOW_ID_CURRENT}, call)
-};
 
 const removedListen = (tab, info) => {
   if (info.windowId === overflowWindow) {
@@ -95,54 +150,11 @@ const attachedListen = (tabId, info) => {
   }
 }
 
-const moveOverflowRight = () => {
-  if (overflowId > 0) {
-    chrome.tabs.move(overflowId, {index: doomedTabNum()});
-  }
-};
-
-const updateOverflowTab = (tabs, tab) => {
-
-  if (tabs.length > (permittedTabNum()) && overflowId === 0) {
-    chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false},
-    (tab) => {
-      overflowId = tab.id;
-      overflowWindow = tab.windowId;
-      purgatoryTab = tabs[penultimateTabNum()];
-    })
-  }
-
-  let activeIndex = 0;
-
-  chrome.tabs.query({active: true}, (babs) => {
-    activeIndex = babs[0].index
-    if (tabs.length > doomedTabNum()) {
-      let doomedTab;
-      if (activeIndex === penultimateTabNum()) {
-        doomedTab = tabs[penultimateTabNum()];
-      } else {
-        doomedTab = tabs[permittedTabNum()];
-      }
-
-      if (activeIndex === (permittedTabNum())) {
-        doomedTab = tabs[penultimateTabNum()];
-      }
-      chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab,
-    permittedTab: permittedTabNum()});
-      chrome.tabs.remove(doomedTab.id);
-    }
-  })
-};
 
 const messageListen = (message, sender) => {
   switch (message.type) {
-    case "ACTIVATE_TAB":
-      chrome.tabs.update(message.tabId, {active: true});
-      break;
     case "OPEN_TAB":
-      if (message.idx) {
-        move = false;
-      }
+      if (message.idx) move = false;
       chrome.tabs.create({url: message.url, active: false, windowId: overflowWindow});
       break;
     case "DESTROY_OVERFLOW":
@@ -163,20 +175,6 @@ const messageListen = (message, sender) => {
       overflowId = 0;
       overflowWindow = 0;
       break;
-    // case "SHOW_NUMBERS":
-    //   getAllTabs(tabs => {
-    //     tabs.forEach(tab => {
-    //       chrome.tabs.sendMessage(tab.id, {type: "PREPEND_TITLE", tab: tab});
-    //     });
-    //   });
-    //   break;
-    // case "REMOVE_NUMBERS":
-    //   getAllTabs(tabs => {
-    //     tabs.forEach(tab => {
-    //       chrome.tabs.sendMessage(tab.id, {type: "SHORTEN_TITLE", tab: tab});
-    //     });
-    //   });
-    //   break;
     case "NUM_SAFE_TABS":
       numSafeTabs = message.num;
       break;
@@ -188,22 +186,18 @@ const messageListen = (message, sender) => {
   }
 }
 
+// Activation/Deactivation
+
 const pack = () => {
   getAllTabs((tabs) => {
     if (tabs.length > (permittedTabNum())) {
-      chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false, index: (permittedTabNum())},
+      chrome.tabs.create({url: chrome.extension.getURL('overflow.html'),
+          active: false, index: (permittedTabNum())},
       (tab) => {
         overflowId = tab.id;
-        overflowWindow = tab.windowId
+        overflowWindow = tab.windowId;
         setTimeout(() => {
-          tabs.forEach((tab) => {
-            if (tab.index > (permittedTabNum())) {
-              chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: tab,
-            permittedTab: permittedTabNum()})
-              chrome.tabs.remove(tab.id)
-            }
-          })
-        }, 1000)
+          sendExtra(tabs), 1000)
       })
     }
   })
