@@ -3,7 +3,7 @@
 
   "name": "Tabs Overflow",
   "description": "This is an extension for managing navigation with a large number by 'overflowing' excess tabs into an index tab.",
-  "version": "1.1",
+  "version": "1.11",
   "background": {
     "pesistent": "false",
     "scripts": ["background.js"]
