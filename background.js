@@ -68,7 +68,6 @@ const sendExtra = (tabs) => {
       chrome.tabs.remove(tab.id)
     }
   })
-}, 1000)
 }
 
 const createOverflow = () => {
@@ -83,10 +82,9 @@ const createOverflow = () => {
 const updateOverflowTab = (tabs, tab) => {
 
   if (tabs.length > (permittedTabNum()) && overflowId === 0) createOverflow();
-  let activeIndex;
 
-  chrome.tabs.query({active: true}, (babs) => {
-    activeIndex = babs[0].index;
+  chrome.tabs.query({active: true}, (activeTab) => {
+    let activeIndex = activeTab[0].index;
     if (tabs.length > doomedTabNum()) {
       let doomedTab;
       if (activeIndex === penultimateTabNum() || activeIndex === permittedTabNum()) {

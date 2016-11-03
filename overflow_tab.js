@@ -109,6 +109,12 @@ chrome.storage.sync.get('safeTabs', (data) => {
 
 // List item creation
 
+const updateHeaderCount = () => {
+  tabCount = document.querySelector('.header-tab-count');
+  newCount = tabCount.innerHTML.slice(7) - 1;
+  tabCount.innerHTML = `Total: ${newCount}`;
+}
+
 const createCloseBtn = (listItem, tab) => {
   let closeBtn = document.createElement('span');
   closeBtn.classList.add('overflow-item-close-btn');
@@ -116,10 +122,8 @@ const createCloseBtn = (listItem, tab) => {
   closeBtn.addEventListener('click', e => {
     e.preventDefault();
     e.stopPropagation();
-    nodeList = nodeList.filter(el => (el.getAttribute('data-id') !== `${tab.id}`) )
-    tabCount = document.querySelector('.header-tab-count')
-    newCount = tabCount.innerHTML.slice(7) - 1
-    tabCount.innerHTML = `Total: ${newCount}`
+    nodeList = nodeList.filter(el => (el.getAttribute('data-id') !== `${tab.id}`) );
+    updateHeaderCount();
     document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
     listItem.nextSibling.remove();
     listItem.remove();
