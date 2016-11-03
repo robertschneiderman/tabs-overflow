@@ -107,12 +107,19 @@ chrome.storage.sync.get('safeTabs', (data) => {
   }
 })
 
+chrome.storage.sync.get('numTabs', (data) => {
+  if (Object.keys(data).length > 0) {
+    document.querySelector('#num-tabs').innerHTML = data.numTabs
+  }
+})
 // List item creation
 
 const updateHeaderCount = () => {
   tabCount = document.querySelector('.header-tab-count');
-  newCount = tabCount.innerHTML.slice(7) - 1;
-  tabCount.innerHTML = `Total: ${newCount}`;
+  newCount = parseInt(document.querySelector('#num-tabs').innerHTML) +
+  nodeList.length - 1;
+  console.log(tabCount.innerHTML);
+  tabCount.innerHTML = `Total: ${newCount} Tabs`;
 }
 
 const createCloseBtn = (listItem, tab) => {

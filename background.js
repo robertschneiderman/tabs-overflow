@@ -70,7 +70,7 @@ const sendExtra = (tabs) => {
   })
 }
 
-const createOverflow = () => {
+const createOverflow = (tabs) => {
   chrome.tabs.create({url: chrome.extension.getURL('overflow.html'), active: false},
   (tab) => {
     overflowId = tab.id;
@@ -81,7 +81,7 @@ const createOverflow = () => {
 
 const updateOverflowTab = (tabs, tab) => {
 
-  if (tabs.length > (permittedTabNum()) && overflowId === 0) createOverflow();
+  if (tabs.length > (permittedTabNum()) && overflowId === 0) createOverflow(tabs);
 
   chrome.tabs.query({active: true}, (activeTab) => {
     let activeIndex = activeTab[0].index;
@@ -195,7 +195,8 @@ const pack = () => {
         overflowId = tab.id;
         overflowWindow = tab.windowId;
         setTimeout(() => {
-          sendExtra(tabs), 1000)
+          sendExtra(tabs)
+        }, 100)
       })
     }
   })
