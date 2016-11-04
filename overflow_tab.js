@@ -62,9 +62,6 @@ const handleRuleChange = (num) => {
   customArmageddon();
 }
 
-
-
-
 let alreadyCreated = (tabList, message) => {
   for (let i = 0; i < tabList.children.length; i++) {
     let childId = tabList.children[i].getAttribute('data-id')
@@ -74,8 +71,6 @@ let alreadyCreated = (tabList, message) => {
   }
   return false;
 }
-
-
 
 const handleNumTabs = (num) => {
   chrome.storage.sync.set({numTabs: num}, () => {
@@ -173,8 +168,7 @@ chrome.runtime.onMessage.addListener((message) => {
   switch (message.type) {
     case "SEND_TAB":
       if (!alreadyCreated(tabList, message)) {
-        let listItem = createListItem(message.tab);
-        nodeList.push(listItem);
+        nodeList.push(createListItem(message.tab));
         customArmageddon();
         updateCounts();
       }
@@ -184,6 +178,7 @@ chrome.runtime.onMessage.addListener((message) => {
       let selItem = document.querySelector(`[data-id="${selId}"]`)
       let url = selItem.getAttribute('data-url');
       chrome.runtime.sendMessage({type: "OPEN_TAB", url: url, idx: message.pen});
+      selItem.nextSibling.remove();
       selItem.remove();
       updateCounts();
       if (nodeList.length === 0) chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
