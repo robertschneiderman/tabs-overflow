@@ -9,12 +9,7 @@ const reverseSort = (callback) => {
 const favCompare = (a, b) => {
   aFav = a.children[1].getAttribute('src')
   bFav = b.children[1].getAttribute('src')
-
-  if (aFav < bFav) {
-    return -1
-  } else {
-    return 1
-  }
+  return (aFav < bFav) ? -1 : 1
 }
 
 const stackCompare = (a,b) => {
@@ -26,11 +21,7 @@ const stackCompare = (a,b) => {
 const alphabetCompare = (a,b) => {
   aTitle = a.lastChild.innerHTML.toLowerCase();
   bTitle = b.lastChild.innerHTML.toLowerCase();
-  if (aTitle < bTitle) {
-    return -1
-  } else {
-    return 1
-  }
+  return (aTitle < bTitle) ? -1 : 1
 }
 
 const ruleList = [favCompare, stackCompare, alphabetCompare,
