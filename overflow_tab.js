@@ -101,7 +101,6 @@ const updateCounts = () => {
   tabCount = document.querySelector('.header-tab-count');
   newCount = parseInt(document.querySelector('#num-tabs').innerHTML) +
   nodeList.length - 1;
-  console.log(tabCount.innerHTML);
   tabCount.innerHTML = `Total: ${newCount} Tabs`;
   document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
 }

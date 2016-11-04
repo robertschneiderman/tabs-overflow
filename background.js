@@ -80,12 +80,7 @@ const createOverflow = (tabs) => {
 }
 
 const doomedTab = (tabs, activeIndex) => {
-
-    if (activeIndex === permittedTabNum()) {
-      return tabs[penultimateTabNum()];
-    } else {
-      return tabs[permittedTabNum()];
-    }
+  return (activeIndex === permittedTabNum()) ? tabs[penultimateTabNum()] : tabs[permittedTabNum()];
 }
 
 const updateOverflowTab = (tabs, tab) => {
