@@ -62,7 +62,7 @@ const moveOverflowRight = () => {
 
 const sendExtra = (tabs) => {
   tabs.forEach((tab) => {
-    if (tab.index > (permittedTabNum())) {
+    if (tab.index > (permittedTabNum()) && tab.id != overflowId) {
       chrome.tabs.sendMessage(overflowId, {type: "SEND_TAB", tab: tab,
     permittedTab: permittedTabNum()})
       chrome.tabs.remove(tab.id)
@@ -79,23 +79,24 @@ const createOverflow = (tabs) => {
   })
 }
 
+const doomedTab = (tabs, activeIndex) => {
+
+    if (activeIndex === permittedTabNum()) {
+      return tabs[penultimateTabNum()];
+    } else {
+      return tabs[permittedTabNum()];
+    }
+}
+
 const updateOverflowTab = (tabs, tab) => {
-
   if (tabs.length > (permittedTabNum()) && overflowId === 0) createOverflow(tabs);
-
   chrome.tabs.query({active: true}, (activeTab) => {
-    let activeIndex = activeTab[0].index;
     if (tabs.length > doomedTabNum()) {
-      let doomedTab;
-      if (activeIndex === penultimateTabNum() || activeIndex === permittedTabNum()) {
-        doomedTab = tabs[penultimateTabNum()];
-      } else {
-        doomedTab = tabs[permittedTabNum()];
-      }
-
-      chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB', tab: doomedTab,
-    permittedTab: permittedTabNum()});
-      chrome.tabs.remove(doomedTab.id);
+      let activeIndex = activeTab[0].index;
+      let dyingTab = doomedTab(tabs, activeIndex);
+      chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB',
+       tab:dyingTab, permittedTab: permittedTabNum()});
+      chrome.tabs.remove(dyingTab.id);
     }
   })
 };
@@ -118,7 +119,6 @@ const removedListen = (tab, info) => {
       overflowWindow = 0;
     }
     getAllTabs((tabs) => {
-      updateOverflowTab(tabs, tab);
       if (overflowId > 0 && tabs.length < doomedTabNum()) {
         chrome.tabs.sendMessage(overflowId, {type: "FETCH_TAB", perm: permittedTabNum(),
       pen: penultimateTabNum()})
@@ -143,7 +143,7 @@ const attachedListen = (tabId, info) => {
   }
 
   if (tabId === overflowId) {
-    overflowWindow = info.newWIndowId
+    overflowWindow = info.newWindowId
     chrome.tabs.sendMessage(overflowId, {type: "UNPACK"})
   }
 }
@@ -190,7 +190,7 @@ const pack = () => {
   getAllTabs((tabs) => {
     if (tabs.length > (permittedTabNum())) {
       chrome.tabs.create({url: chrome.extension.getURL('overflow.html'),
-          active: false, index: (permittedTabNum())},
+          active: false},
       (tab) => {
         overflowId = tab.id;
         overflowWindow = tab.windowId;

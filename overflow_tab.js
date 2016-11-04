@@ -58,20 +58,17 @@ chrome.storage.sync.get('selectedRule', (data) => {
 const handleReverse = () => {
   selectedRule = (selectedRule + 3) % 6;
   chrome.storage.sync.set({selectedRule: selectedRule})
-  tabList = document.getElementById('overflow-list')
-  customArmageddon(tabList);
+  customArmageddon();
 }
 
 const handleRuleChange = (num) => {
   if (selectedRule > 2) {
     selectedRule = num + 3;
-    chrome.storage.sync.set({selectedRule: selectedRule})
   } else {
     selectedRule = num;
-    chrome.storage.sync.set({selectedRule: selectedRule})
   }
-  tabList = document.getElementById('overflow-list')
-  customArmageddon(tabList);
+  chrome.storage.sync.set({selectedRule: selectedRule})
+  customArmageddon();
 }
 
 
@@ -114,12 +111,13 @@ chrome.storage.sync.get('numTabs', (data) => {
 })
 // List item creation
 
-const updateHeaderCount = () => {
+const updateCounts = () => {
   tabCount = document.querySelector('.header-tab-count');
   newCount = parseInt(document.querySelector('#num-tabs').innerHTML) +
   nodeList.length - 1;
   console.log(tabCount.innerHTML);
   tabCount.innerHTML = `Total: ${newCount} Tabs`;
+  document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
 }
 
 const createCloseBtn = (listItem, tab) => {
@@ -130,8 +128,7 @@ const createCloseBtn = (listItem, tab) => {
     e.preventDefault();
     e.stopPropagation();
     nodeList = nodeList.filter(el => (el.getAttribute('data-id') !== `${tab.id}`) );
-    updateHeaderCount();
-    document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
+    updateCounts();
     listItem.nextSibling.remove();
     listItem.remove();
   });
@@ -168,7 +165,8 @@ const createListItem = (tab) => {
   return listItem;
 }
 
-const customArmageddon = (tabList) => {
+const customArmageddon = () => {
+  let tabList = document.getElementById("overflow-list")
   let newNode = nodeList.slice(0)
   newNode.sort(ruleList[selectedRule])
   tabList.innerHTML = ""
@@ -186,12 +184,9 @@ chrome.runtime.onMessage.addListener((message) => {
       if (!alreadyCreated(tabList, message)) {
         let listItem = createListItem(message.tab);
         nodeList.push(listItem);
-        customArmageddon(tabList);
-        document.querySelector('.header-tab-count').innerHTML =
-         `Total: ${message.permittedTab + nodeList.length} Tabs`
-        document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
+        customArmageddon();
+        updateCounts();
       }
-      return true;
       break;
     case "FETCH_TAB":
       let selId = nodeList.pop().getAttribute('data-id')
@@ -199,11 +194,8 @@ chrome.runtime.onMessage.addListener((message) => {
       let url = selItem.getAttribute('data-url');
       chrome.runtime.sendMessage({type: "OPEN_TAB", url: url, idx: message.pen});
       selItem.remove();
-      document.querySelector('.header-tab-count').innerHTML = `Total: ${message.perm + nodeList.length} Tabs`
-      document.querySelector('title').innerHTML = `(${nodeList.length}) Overflow Tab`;
-      if (nodeList.length === 0) {
-        chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
-      }
+      updateCounts();
+      if (nodeList.length === 0) chrome.runtime.sendMessage({type: "DESTROY_OVERFLOW"})
       break;
     case "UNPACK":
       urlList = nodeList.map((el) => {
