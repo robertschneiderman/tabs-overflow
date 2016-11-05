@@ -3,7 +3,7 @@
 let overflowId = 0;
 let overflowWindow = 0;
 let purgatoryTab;
-let active = true;
+let active;
 let numSafeTabs = 3;
 let numTabs = 13
 
@@ -84,7 +84,7 @@ const updateOverflowTab = (tabs, tab) => {
       let activeIndex = activeTab[0].index;
       let dyingTab = doomedTab(tabs, activeIndex);
       chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB',
-        tab:dyingTab, permittedTab: permittedTabNum()});
+        tab: dyingTab, permittedTab: permittedTabNum()});
       chrome.tabs.remove(dyingTab.id);
     }
   })
