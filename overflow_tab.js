@@ -53,11 +53,7 @@ const handleReverse = () => {
 }
 
 const handleRuleChange = (num) => {
-  if (selectedRule > 2) {
-    selectedRule = num + 3;
-  } else {
-    selectedRule = num;
-  }
+  selectedRule = selectedRule > 2 ? num + 3 : num;
   chrome.storage.sync.set({selectedRule: selectedRule})
   customArmageddon();
 }
@@ -65,9 +61,7 @@ const handleRuleChange = (num) => {
 let alreadyCreated = (tabList, message) => {
   for (let i = 0; i < tabList.children.length; i++) {
     let childId = tabList.children[i].getAttribute('data-id')
-    if (childId == message.tab.id) {
-      return true;
-    }
+    if (childId == message.tab.id) return true;
   }
   return false;
 }
