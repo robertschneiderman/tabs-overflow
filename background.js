@@ -84,7 +84,7 @@ const updateOverflowTab = (tabs, tab) => {
       let activeIndex = activeTab[0].index;
       let dyingTab = doomedTab(tabs, activeIndex);
       chrome.tabs.sendMessage(overflowId, {type: 'SEND_TAB',
-       tab:dyingTab, permittedTab: permittedTabNum()});
+        tab:dyingTab, permittedTab: permittedTabNum()});
       chrome.tabs.remove(dyingTab.id);
     }
   })
@@ -193,9 +193,7 @@ const listenOn = () => {
 
 const closeListen = (message, sender) => {
   if (message.type = "UNPACK_TABS") {
-    message.urlList.forEach((url) => {
-      chrome.tabs.create({url: url, active: false})
-    })
+    message.urlList.forEach(url => chrome.tabs.create({url: url, active: false}))
     destroyOverflow();
   }
 }
